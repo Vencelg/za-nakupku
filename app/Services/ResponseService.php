@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 
 /**
  * Class ResponseService
+ * @author Václav Gazda <gazdavaclav@gmail.com>
  * @package App\Services
  */
 class ResponseService implements ResponseServiceInterface
