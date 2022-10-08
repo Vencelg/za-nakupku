@@ -19,6 +19,11 @@ class Category extends Model
      */
     protected $fillable = [
         'name',
+        'code'
+    ];
+
+    protected $with = [
+        'listings'
     ];
 
     public function listings(): HasMany

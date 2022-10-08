@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::apiResources([
+    'categories' => CategoryController::class,
+]);
