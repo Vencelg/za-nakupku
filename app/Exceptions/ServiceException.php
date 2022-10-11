@@ -17,6 +17,10 @@ class ServiceException extends Exception
      */
     public function render(Request $request): JsonResponse
     {
-        return ResponseService::response('Error in service on line ' . $this->getLine() . ', ' . $this->getMessage(), $this->getCode(), true);
+        return ResponseService::response(config('app.debug')
+            ? 'Error in service on line ' . $this->getLine() . ', ' . $this->getMessage()
+            : $this->getMessage(),
+            $this->getCode(),
+            true);
     }
 }

@@ -17,6 +17,11 @@ class ControllerException extends Exception
      */
     public function render(Request $request): JsonResponse
     {
-        return ResponseService::response('Error in controller on line ' . $this->getLine() . ', ' . $this->getMessage(), $this->getCode(), true);
+        return ResponseService::response(
+            config('app.debug')
+                ? 'Error in controller on line ' . $this->getLine() . ', ' . $this->getMessage()
+                : $this->getMessage(),
+            $this->getCode(),
+            true);
     }
 }
