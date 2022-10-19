@@ -24,7 +24,6 @@ class ResponseService implements ResponseServiceInterface
             'errors' => $errors,
             'count' => $count,
             'data' => $data
-        ],
-            $status);
+        ], $status);
     }
 }

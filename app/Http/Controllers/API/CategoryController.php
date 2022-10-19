@@ -10,6 +10,9 @@ use App\Models\Category;
 use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * @author Václav Gazda <gazdavaclav@gmail.com>
+ */
 class CategoryController extends Controller
 {
     /**
