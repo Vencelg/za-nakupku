@@ -54,4 +54,6 @@ class AuthenticationController extends Controller
             'accessToken' => $accessToken
         ], 200);
     }
+
+
 }

@@ -21,16 +21,18 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'user'], function () {
     Route::post('register', [AuthenticationController::class, 'register']);
     Route::post('login', [AuthenticationController::class, 'login']);
+
+    Route::group(['prefix' => 'email/verify', 'middleware' => ['throttle:6,1']], function () {
+        Route::get('{id}/{hash}', [VerificationController::class, 'verify'])
+            ->name('verification.verify');
+
+        Route::post('resend', [VerificationController::class, 'resend'])->middleware('auth:sanctum')
+            ->name('verification.send');
+    });
 });
 
-Route::group(['prefix' => 'email/verify', 'middleware' => ['throttle:6,1']], function () {
-    Route::get('{id}/{hash}', [VerificationController::class, 'verify'])
-        ->name('verification.verify');
-
-    Route::post('resend', [VerificationController::class, 'resend'])->middleware('auth:sanctum')
-        ->name('verification.send');
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::apiResources([
+        'categories' => CategoryController::class,
+    ]);
 });
-
-Route::apiResources([
-    'categories' => CategoryController::class,
-]);

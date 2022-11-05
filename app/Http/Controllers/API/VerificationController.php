@@ -46,8 +46,10 @@ class VerificationController extends Controller
     {
         if (!$request->user()->hasVerifiedEmail()) {
             $request->user()->sendEmailVerificationNotification();
+
+            return $this->response(true, 200);
         }
 
-        return $this->response([], 200);
+        return $this->response(false, 200);
     }
 }
