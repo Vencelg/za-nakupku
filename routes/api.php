@@ -23,11 +23,11 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('login', [AuthenticationController::class, 'login']);
 });
 
-Route::group(['prefix' => 'email/verify', 'middleware' => ['auth:sanctum', 'throttle:6,1']], function () {
+Route::group(['prefix' => 'email/verify', 'middleware' => ['throttle:6,1']], function () {
     Route::get('{id}/{hash}', [VerificationController::class, 'verify'])
         ->name('verification.verify');
 
-    Route::post('resend', [VerificationController::class, 'resend'])
+    Route::post('resend', [VerificationController::class, 'resend'])->middleware('auth:sanctum')
         ->name('verification.send');
 });
 

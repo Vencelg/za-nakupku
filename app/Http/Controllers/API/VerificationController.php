@@ -17,13 +17,6 @@ use Illuminate\Http\Request;
 class VerificationController extends Controller
 {
     /**
-     * @param UserService $service
-     */
-    public function __construct(
-        protected UserService $service,
-    ){}
-
-    /**
      * @param Request $request
      * @return RedirectResponse
      */
@@ -31,19 +24,17 @@ class VerificationController extends Controller
     {
         $user = User::find($request->route('id'));
 
-        try {
-            if($this->service->checkIfUserIsVerified($user)) {
-                return redirect(config('FRONTEND_VERIFICATION_ALREADY_VERIFIED_URL'));
-            }
-        }catch (ServiceException $exception) {
-            return redirect(config('FRONTEND_VERIFICATION_FAIL_URL'));
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->away(config('app.FRONTEND_VERIFICATION_ALREADY_VERIFIED_URL'));
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
+
+            return redirect()->away(config('app.FRONTEND_VERIFICATION_SUCCESS_URL'));
         }
 
-        return redirect(config('FRONTEND_VERIFICATION_SUCCESS_URL'));
+        return redirect()->away(config('app.FRONTEND_VERIFICATION_FAIL_URL'));
     }
 
     /**
@@ -53,8 +44,9 @@ class VerificationController extends Controller
      */
     public function resend(Request $request): JsonResponse
     {
-        $this->service->checkIfUserIsVerified($request->user());
-        $request->user()->sendEmailVerificationNotification();
+        if (!$request->user()->hasVerifiedEmail()) {
+            $request->user()->sendEmailVerificationNotification();
+        }
 
         return $this->response([], 200);
     }
