@@ -22,6 +22,11 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('register', [AuthenticationController::class, 'register']);
     Route::post('login', [AuthenticationController::class, 'login']);
 
+    Route::group(['prefix' => 'password/reset'], function () {
+        Route::post('resend', [AuthenticationController::class, 'sendPasswordReset']);
+        Route::post('', [AuthenticationController::class, 'passwordReset']);
+    });
+
     Route::group(['prefix' => 'email/verify', 'middleware' => ['throttle:6,1']], function () {
         Route::get('{id}/{hash}', [VerificationController::class, 'verify'])
             ->name('verification.verify');
