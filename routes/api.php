@@ -18,9 +18,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'user'], function () {
+Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [AuthenticationController::class, 'register']);
     Route::post('login', [AuthenticationController::class, 'login']);
+    Route::post('logout', [AuthenticationController::class, 'logout']);
 
     Route::group(['prefix' => 'password/reset'], function () {
         Route::post('resend', [AuthenticationController::class, 'sendPasswordReset']);

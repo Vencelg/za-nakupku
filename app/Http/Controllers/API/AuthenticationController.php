@@ -13,6 +13,7 @@ use DB;
 use Hash;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
 /**
@@ -59,6 +60,24 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $request
+            ->user()
+            ->currentAccessToken()
+            ->delete();
+
+        return $this->response([], 200);
+    }
+
+    /**
+     * @param SendPasswordResetRequest $request
+     * @return JsonResponse
+     */
     public function sendPasswordReset(SendPasswordResetRequest $request): JsonResponse
     {
         if (Password::sendResetLink($request->only('email'))) {
@@ -68,6 +87,10 @@ class AuthenticationController extends Controller
         return $this->response(false, 200);
     }
 
+    /**
+     * @param PasswordResetRequest $request
+     * @return JsonResponse
+     */
     public function passwordReset(PasswordResetRequest $request): JsonResponse
     {
         $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function ($user, $password) {
