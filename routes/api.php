@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'auth'], function () {
+    Route::get('user', [AuthenticationController::class, 'currentUser'])
+        ->middleware('auth:sanctum');
     Route::post('register', [AuthenticationController::class, 'register']);
     Route::post('login', [AuthenticationController::class, 'login']);
     Route::post('logout', [AuthenticationController::class, 'logout']);
@@ -32,7 +34,8 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('{id}/{hash}', [VerificationController::class, 'verify'])
             ->name('verification.verify');
 
-        Route::post('resend', [VerificationController::class, 'resend'])->middleware('auth:sanctum')
+        Route::post('resend', [VerificationController::class, 'resend'])
+            ->middleware('auth:sanctum')
             ->name('verification.send');
     });
 });

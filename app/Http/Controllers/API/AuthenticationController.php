@@ -21,6 +21,11 @@ use Illuminate\Support\Facades\Password;
  */
 class AuthenticationController extends Controller
 {
+    public function currentUser(Request $request): JsonResponse
+    {
+        return $this->response($request->user(), 200);
+    }
+
     /**
      * @param RegisterUserRequest $request
      * @return JsonResponse
