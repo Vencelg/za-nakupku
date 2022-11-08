@@ -11,6 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @author Václav Gazda <gazdavaclav@gmail.com>
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -50,14 +53,28 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @var string[]
+     */
+    protected $with = [
+        'listings'
+    ];
+
+    /**
+     * @return HasMany
+     */
     public function listings(): HasMany
     {
         return $this->hasMany(Listing::class);
     }
 
+    /**
+     * @param $token
+     * @return void
+     */
     public function sendPasswordResetNotification($token): void
     {
-        $url = config('app.FRONTEND_PASSWORD_RESET_URL').$token;
+        $url = config('app.FRONTEND_PASSWORD_RESET_URL') . $token;
 
         $this->notify(new PasswordResetNotification($url));
     }

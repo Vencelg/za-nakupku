@@ -22,10 +22,16 @@ class Category extends Model
         'code'
     ];
 
+    /**
+     * @var string[]
+     */
     protected $with = [
         'listings'
     ];
 
+    /**
+     * @return HasMany
+     */
     public function listings(): HasMany
     {
         return $this->hasMany(Listing::class);
