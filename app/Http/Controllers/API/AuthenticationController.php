@@ -109,6 +109,13 @@ class AuthenticationController extends Controller
         }
         );
 
-        return $this->response(__($status), 200);
+        $code = 200;
+        $errors = false;
+        if ($status == Password::INVALID_TOKEN || $status == Password::INVALID_USER) {
+            $code = 400;
+            $errors = true;
+        }
+
+        return $this->response(__($status), $code, $errors);
     }
 }
