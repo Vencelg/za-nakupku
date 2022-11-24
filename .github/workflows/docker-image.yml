@@ -32,4 +32,4 @@ jobs:
       with:
         file: ./Dockerfile
         push: true
-        tags: apfcrypto/nodewebsite:latest
+        tags: creativehillcollege/projects:zanakupku
