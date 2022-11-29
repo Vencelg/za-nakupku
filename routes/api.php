@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\API\AuthenticationController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ListingController;
+use App\Http\Controllers\API\ListingImageController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VerificationController;
 use App\Http\Controllers\Controller;
@@ -45,7 +47,11 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResources([
         'categories' => CategoryController::class,
+        'listings' => ListingController::class,
     ]);
+
+    Route::post('listings/{id}/image/add', [ListingImageController::class, 'store']);
+    Route::post('listings/{id}/image/delete', [ListingImageController::class, 'delete']);
 
     Route::get('users/{id}', [UserController::class, 'show']);
     Route::put('users/{id}', [UserController::class, 'update']);

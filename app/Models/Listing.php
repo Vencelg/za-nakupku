@@ -28,6 +28,10 @@ class Listing extends Model
         'location',
     ];
 
+    protected $with =[
+        'listingImages'
+    ];
+
     /**
      * @return BelongsTo
      */
@@ -42,5 +46,18 @@ class Listing extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function listingImages(): HasMany
+    {
+        return $this->hasMany(ListingImage::class, 'listing_id');
+    }
+
+    public static function find(int $id): Listing|array|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|Model|\LaravelIdea\Helper\App\Models\_IH_Listing_C|\LaravelIdea\Helper\App\Models\_IH_Listing_QB|null
+    {
+        return Listing::with(['user.listings', 'category.listings', 'listingImages'])->find($id);
     }
 }

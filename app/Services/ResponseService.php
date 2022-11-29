@@ -17,8 +17,12 @@ class ResponseService implements ResponseServiceInterface
      */
     public static function response(mixed $data, int $status, bool $errors = false): JsonResponse
     {
-        $count = is_countable($data) ? count($data) : 0;
-        $count = !empty($data) ? 1 : 0;
+        $count = 0;
+        if (is_countable($data)) {
+            $count = count($data);
+        } else if (!empty($data)) {
+            $count = 1;
+        }
 
         return response()->json([
             'errors' => $errors,

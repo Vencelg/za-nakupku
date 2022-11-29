@@ -54,13 +54,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * @var string[]
-     */
-    protected $with = [
-        'listings'
-    ];
-
-    /**
      * @return HasMany
      */
     public function listings(): HasMany

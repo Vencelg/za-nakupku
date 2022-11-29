@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(Listing::class);
             $table->string('name');
+            $table->string('url');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -23,13 +23,6 @@ class Category extends Model
     ];
 
     /**
-     * @var string[]
-     */
-    protected $with = [
-        'listings'
-    ];
-
-    /**
      * @return HasMany
      */
     public function listings(): HasMany
