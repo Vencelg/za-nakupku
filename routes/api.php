@@ -44,17 +44,15 @@ Route::group(['prefix' => 'auth'], function () {
     });
 });
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::apiResources([
-        'categories' => CategoryController::class,
-        'listings' => ListingController::class,
-    ]);
+Route::apiResources([
+    'categories' => CategoryController::class,
+    'listings' => ListingController::class,
+]);
 
-    Route::post('listings/{id}/image/add', [ListingImageController::class, 'store']);
-    Route::post('listings/{id}/image/delete', [ListingImageController::class, 'delete']);
+Route::post('listings/{id}/image/add', [ListingImageController::class, 'store']);
+Route::post('listings/{id}/image/delete', [ListingImageController::class, 'delete']);
 
-    Route::get('users/{id}', [UserController::class, 'show']);
-    Route::put('users/{id}', [UserController::class, 'update']);
-    Route::patch('users/{id}', [UserController::class, 'update']);
-    Route::delete('users/{id}', [UserController::class, 'destroy']);
-});
+Route::get('users/{id}', [UserController::class, 'show']);
+Route::put('users/{id}', [UserController::class, 'update']);
+Route::patch('users/{id}', [UserController::class, 'update']);
+Route::delete('users/{id}', [UserController::class, 'destroy']);

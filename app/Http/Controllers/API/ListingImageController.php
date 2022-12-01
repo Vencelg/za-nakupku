@@ -24,6 +24,7 @@ class ListingImageController extends Controller
         protected ListingServiceInterface $service = new ListingService()
     )
     {
+        $this->middleware('auth:sanctum');
     }
 
     /**

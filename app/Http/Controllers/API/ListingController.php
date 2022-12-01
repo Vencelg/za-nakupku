@@ -19,6 +19,7 @@ class ListingController extends Controller
         protected ListingServiceInterface $service = new ListingService()
     )
     {
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
     }
 
     /**
