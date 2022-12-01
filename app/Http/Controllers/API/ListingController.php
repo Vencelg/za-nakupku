@@ -49,6 +49,7 @@ class ListingController extends Controller
             'price' => $request->input('price'),
             'phone_number' => $request->input('phone_number'),
             'location' => $request->input('location'),
+            'ending' => $request->input('ending')
         ]);
         $newListing->save();
 

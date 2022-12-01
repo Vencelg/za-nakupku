@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->integer('price');
             $table->string('phone_number');
             $table->string('location');
+            $table->timestamp('ending');
             $table->timestamps();
             $table->softDeletes();
         });

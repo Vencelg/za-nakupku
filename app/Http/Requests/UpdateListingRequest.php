@@ -32,6 +32,7 @@ class UpdateListingRequest extends FormRequest
                 'price' => ['required', 'integer'],
                 'phone_number' => ['required', 'string'],
                 'location' => ['required', 'string'],
+                'ending' => ['required', 'date_format:Y-m-d H:i:s']
             ];
         }
 
@@ -44,6 +45,7 @@ class UpdateListingRequest extends FormRequest
                 'price' => ['integer'],
                 'phone_number' => ['string'],
                 'location' => ['string'],
+                'ending' => ['date_format:Y-m-d H:i:s']
             ];
         }
     }

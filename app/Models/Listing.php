@@ -26,6 +26,7 @@ class Listing extends Model
         'price',
         'phone_number',
         'location',
+        'ending'
     ];
 
     protected $with =[

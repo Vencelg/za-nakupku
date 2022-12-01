@@ -31,6 +31,14 @@ class StoreListingRequest extends FormRequest
             'price' => ['required', 'integer'],
             'phone_number' => ['required', 'string'],
             'location' => ['required', 'string'],
+            'ending' => ['required', 'date_format:Y-m-d H:i:s', 'after:tomorrow']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'ending.after' => 'Auction can\'t end on today\'s date'
         ];
     }
 }
