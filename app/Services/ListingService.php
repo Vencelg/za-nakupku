@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Enums\ListingStatusEnum;
 use App\Models\Listing;
 use App\Models\ListingImage;
 use App\Services\Interfaces\ListingServiceInterface;
+use DateTime;
+use Exception;
 use Illuminate\Http\UploadedFile;
 use Storage;
 
@@ -41,6 +44,28 @@ class ListingService implements ListingServiceInterface
         foreach ($listing->listingImages as $listingImage) {
             Storage::delete('public/images/' . $listingImage->name);
             $listingImage->delete();
+        }
+    }
+
+    /**
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function checkListingStatus(Listing $listing): void
+    {
+        $date1 = new DateTime('now');
+        $date2 = new DateTime($listing->ending);
+        $interval = $date2->diff($date1);
+
+        if ($interval->invert <= 0) {
+            $listing->setAttribute('status', ListingStatusEnum::ENDED);
+            $listing->save();
+            return;
+        }
+
+        if (($interval->days <= 1 && $interval->h == 0) || ($interval->days == 1 && $interval->h <= 23)) {
+            $listing->setAttribute('status', ListingStatusEnum::SOON_ENDING);
+            $listing->save();
         }
     }
 }

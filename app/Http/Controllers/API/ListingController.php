@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\ListingStatusEnum;
 use App\Exceptions\ControllerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreListingRequest;
@@ -10,6 +11,7 @@ use App\Models\Listing;
 use App\Models\ListingImage;
 use App\Services\Interfaces\ListingServiceInterface;
 use App\Services\ListingService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Storage;
 
@@ -70,12 +72,17 @@ class ListingController extends Controller
      * @param int $id
      * @return JsonResponse
      * @throws ControllerException
+     * @throws Exception
      */
     public function show(int $id): JsonResponse
     {
         $listing = Listing::find($id);
         if (!($listing instanceof Listing)) {
             throw new ControllerException('Listing with id: ' . $id . ' not found', 400);
+        }
+
+        if ($listing->status != ListingStatusEnum::ENDED) {
+            $this->service->checkListingStatus($listing);
         }
 
         return $this->response($listing, 200);
@@ -88,12 +95,17 @@ class ListingController extends Controller
      * @param int $id
      * @return JsonResponse
      * @throws ControllerException
+     * @throws Exception
      */
     public function update(UpdateListingRequest $request, int $id): JsonResponse
     {
         $listing = Listing::find($id);
         if (!($listing instanceof Listing)) {
             throw new ControllerException('Listing with id: ' . $id . ' not found', 400);
+        }
+
+        if ($listing->status != ListingStatusEnum::ENDED) {
+            $this->service->checkListingStatus($listing);
         }
 
         $listing->update($request->all());

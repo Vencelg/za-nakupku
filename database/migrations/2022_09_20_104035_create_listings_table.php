@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->string('phone_number');
             $table->string('location');
             $table->timestamp('ending');
+            $table->tinyInteger('status')->default(2);
             $table->timestamps();
             $table->softDeletes();
         });

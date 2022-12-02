@@ -24,4 +24,10 @@ interface ListingServiceInterface
      */
     public function deleteListingImages(Listing $listing): void;
 
+
+    /**
+     * @param Listing $listing
+     * @return void
+     */
+    public function checkListingStatus(Listing $listing): void;
 }
