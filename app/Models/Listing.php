@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use LaravelIdea\Helper\App\Models\_IH_Listing_C;
 
 /**
  * @author Václav Gazda <gazdavaclav@gmail.com>
@@ -57,8 +59,17 @@ class Listing extends Model
         return $this->hasMany(ListingImage::class, 'listing_id');
     }
 
-    public static function find(int $id): Listing|array|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|Model|\LaravelIdea\Helper\App\Models\_IH_Listing_C|\LaravelIdea\Helper\App\Models\_IH_Listing_QB|null
+    public static function find(int $id): Listing|array|\Illuminate\Database\Eloquent\Builder|Collection|Model|_IH_Listing_C|\LaravelIdea\Helper\App\Models\_IH_Listing_QB|null
     {
         return Listing::with(['user.listings', 'category.listings', 'listingImages'])->find($id);
+    }
+
+    public static function all($columns = ['*']): Collection|_IH_Listing_C|array
+    {
+        if (!is_null(request('categoryId'))) {
+            return parent::where('category_id', request('categoryId'))->get();
+        }else {
+            return parent::all($columns);
+        }
     }
 }
