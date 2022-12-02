@@ -22,6 +22,10 @@ class Category extends Model
         'code'
     ];
 
+    protected $with = [
+        'listings'
+    ];
+
     /**
      * @return HasMany
      */
