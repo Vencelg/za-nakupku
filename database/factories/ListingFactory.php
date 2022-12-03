@@ -23,7 +23,7 @@ class ListingFactory extends Factory
         return [
             'category_id' => fake()->numberBetween(1, 10),
             'user_id' => $user->id,
-            'name' => fake()->randomElement,
+            'name' => fake()->text(80),
             'info' => fake()->text(500),
             'price' => 15000,
             'phone_number' => $user->phone_number,

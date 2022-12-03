@@ -17,7 +17,7 @@ class ListingImageFactory extends Factory
      */
     public function definition()
     {
-        $id = fake()->numberBetween(1, 6);
+        $id = fake()->numberBetween(1, 25);
         $listing = Listing::find($id);
 
         return [

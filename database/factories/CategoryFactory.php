@@ -16,7 +16,8 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        $name = fake()->colorName();
+        $name = fake()->text(15);
+
         return [
             'name' => $name,
             'code' => $name.'_code'

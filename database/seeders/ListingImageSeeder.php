@@ -15,6 +15,6 @@ class ListingImageSeeder extends Seeder
      */
     public function run()
     {
-        ListingImage::factory()->times(40)->create();
+        ListingImage::factory()->times(60)->create();
     }
 }
