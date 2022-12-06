@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthenticationController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ListingController;
 use App\Http\Controllers\API\ListingImageController;
+use App\Http\Controllers\API\MainPageController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VerificationController;
 use App\Http\Controllers\Controller;
@@ -56,3 +57,5 @@ Route::get('users/{id}', [UserController::class, 'show']);
 Route::put('users/{id}', [UserController::class, 'update']);
 Route::patch('users/{id}', [UserController::class, 'update']);
 Route::delete('users/{id}', [UserController::class, 'destroy']);
+
+Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
