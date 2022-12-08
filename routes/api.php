@@ -5,6 +5,7 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ListingController;
 use App\Http\Controllers\API\ListingImageController;
 use App\Http\Controllers\API\MainPageController;
+use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VerificationController;
 use App\Http\Controllers\Controller;
@@ -28,7 +29,7 @@ Route::group(['prefix' => 'auth'], function () {
         ->middleware('auth:sanctum');
     Route::post('register', [AuthenticationController::class, 'register']);
     Route::post('login', [AuthenticationController::class, 'login']);
-    Route::get('logout', [AuthenticationController::class, 'logout'])
+       Route::get('logout', [AuthenticationController::class, 'logout'])
         ->middleware('auth:sanctum');
 
     Route::group(['prefix' => 'password/reset'], function () {
@@ -60,6 +61,7 @@ Route::patch('users/{id}', [UserController::class, 'update']);
 Route::delete('users/{id}', [UserController::class, 'destroy']);
 
 Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
+Route::get('search/{search}', [SearchController::class, 'index']);
 
 Route::fallback(function () {
     return ResponseService::response([
