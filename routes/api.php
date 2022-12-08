@@ -8,6 +8,7 @@ use App\Http\Controllers\API\MainPageController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VerificationController;
 use App\Http\Controllers\Controller;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,3 +60,10 @@ Route::patch('users/{id}', [UserController::class, 'update']);
 Route::delete('users/{id}', [UserController::class, 'destroy']);
 
 Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
+
+Route::fallback(function () {
+    return ResponseService::response([
+        'message' => 'HTTP Route not found. Check your URL',
+        'url' => url()->current()
+    ], 404, true);
+});
