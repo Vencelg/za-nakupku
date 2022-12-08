@@ -80,9 +80,9 @@ class Listing extends Model
     public static function all($columns = ['*']): Collection|_IH_Listing_C|array
     {
         if (!is_null(request('categoryId'))) {
-            return parent::where('category_id', request('categoryId'))->get();
+            return parent::where('category_id', request('categoryId'))->with(['user.listings', 'category.listings', 'listingImages'])->get($columns);
         }else {
-            return parent::all($columns);
+            return parent::with(['user.listings', 'category.listings', 'listingImages'])->get($columns);
         }
     }
 }
