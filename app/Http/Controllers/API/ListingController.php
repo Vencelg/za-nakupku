@@ -7,6 +7,7 @@ use App\Exceptions\ControllerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreListingRequest;
 use App\Http\Requests\UpdateListingRequest;
+use App\Models\Category;
 use App\Models\Listing;
 use App\Models\ListingImage;
 use App\Services\Interfaces\ListingServiceInterface;
@@ -19,8 +20,7 @@ class ListingController extends Controller
 {
     public function __construct(
         protected ListingServiceInterface $service = new ListingService()
-    )
-    {
+    ) {
         $this->middleware('auth:sanctum')->except(['index', 'show']);
     }
 
@@ -31,15 +31,21 @@ class ListingController extends Controller
      */
     public function index(): JsonResponse
     {
-        $listings = Listing::all();
+        $code = request('category');
+        $category = is_string($code) ? Category::whereCode(request('category'))->first() : null;
+        $listings = Listing::allByCategory($category);
 
-        return $this->response($listings, 200);
+        return $this->response([
+            'category' => $category,
+            'listings' => $listings
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param StoreListingRequest $request
+     *
      * @return JsonResponse
      */
     public function store(StoreListingRequest $request): JsonResponse
@@ -70,6 +76,7 @@ class ListingController extends Controller
      * Display the specified resource.
      *
      * @param int $id
+     *
      * @return JsonResponse
      * @throws ControllerException
      * @throws Exception
@@ -93,6 +100,7 @@ class ListingController extends Controller
      *
      * @param UpdateListingRequest $request
      * @param int $id
+     *
      * @return JsonResponse
      * @throws ControllerException
      * @throws Exception
@@ -118,6 +126,7 @@ class ListingController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
+     *
      * @return JsonResponse
      * @throws ControllerException
      */

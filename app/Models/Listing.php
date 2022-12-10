@@ -36,7 +36,7 @@ class Listing extends Model
     /**
      * @var string[]
      */
-    protected $with =[
+    protected $with = [
         'listingImages'
     ];
 
@@ -66,6 +66,7 @@ class Listing extends Model
 
     /**
      * @param int $id
+     *
      * @return Listing|array|Builder|Collection|Model|_IH_Listing_C|_IH_Listing_QB|null
      */
     public static function find(int $id): Listing|array|Builder|Collection|Model|_IH_Listing_C|_IH_Listing_QB|null
@@ -74,15 +75,19 @@ class Listing extends Model
     }
 
     /**
-     * @param $columns
+     * @param Category|null $category
+     *
      * @return Collection|_IH_Listing_C|array
      */
-    public static function all($columns = ['*']): Collection|_IH_Listing_C|array
+    public static function allByCategory(?Category $category = null): Collection|_IH_Listing_C|array
     {
-        if (!is_null(request('categoryId'))) {
-            return parent::where('category_id', request('categoryId'))->with(['user.listings', 'category.listings', 'listingImages'])->get($columns);
-        }else {
-            return parent::with(['user.listings', 'category.listings', 'listingImages'])->get($columns);
+        if ($category instanceof Category) {
+            return parent::where('category_id', $category->id)->with(
+                ['user.listings', 'category.listings', 'listingImages']
+            )
+                ->get();
+        } else {
+            return parent::with(['user.listings', 'category.listings', 'listingImages'])->get();
         }
     }
 }
