@@ -33,7 +33,7 @@ class ListingController extends Controller
     {
         $code = request('category');
         $category = is_string($code) ? Category::whereCode(request('category'))->first() : null;
-        $listings = Listing::allByCategory($category);
+        $listings = Listing::all();
 
         return $this->response([
             'category' => $category,

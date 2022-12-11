@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Exceptions\ModelException;
+use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -74,20 +76,23 @@ class Listing extends Model
         return Listing::with(['user.listings', 'category.listings', 'listingImages'])->find($id);
     }
 
-    /**
-     * @param Category|null $category
-     *
-     * @return Collection|_IH_Listing_C|array
-     */
-    public static function allByCategory(?Category $category = null): Collection|_IH_Listing_C|array
+    public static function all($columns = ['*']): Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
     {
-        if ($category instanceof Category) {
-            return parent::where('category_id', $category->id)->with(
-                ['user.listings', 'category.listings', 'listingImages']
-            )
-                ->get();
-        } else {
-            return parent::with(['user.listings', 'category.listings', 'listingImages'])->get();
+        $listings = Listing::with(['user.listings', 'category.listings', 'listingImages']);
+        $code = request('category');
+        $search = request('search');
+        $perPage = (int) request('perPage');
+
+        if (is_string($code)) {
+            $category = Category::where('code', $code)->first();
+
+            $listings->where('category_id', $category?->id);
         }
+
+        if (is_string($search)) {
+            $listings->where('name', 'ILIKE', '%' . $search . '%');
+        }
+
+        return $listings->paginate($perPage);
     }
 }
