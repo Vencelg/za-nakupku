@@ -76,11 +76,15 @@ class Listing extends Model
         return Listing::with(['user.listings', 'category.listings', 'listingImages'])->find($id);
     }
 
-    public static function all($columns = ['*']): Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
+    public static function all(
+        $columns = ['*']): Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
     {
         $listings = Listing::with(['user.listings', 'category.listings', 'listingImages']);
         $code = request('category');
         $search = request('search');
+        $minPrice = is_string(request('minPrice')) ? intval(request('minPrice')) : null;
+        $maxPrice = is_string(request('maxPrice')) ? intval(request('maxPrice')) : null;
+        $orderBy = request('orderBy');
         $perPage = (int) request('perPage');
 
         if (is_string($code)) {
@@ -91,6 +95,18 @@ class Listing extends Model
 
         if (is_string($search)) {
             $listings->where('name', 'ILIKE', '%' . $search . '%');
+        }
+
+        if (is_int($minPrice)) {
+            $listings->where('price', '>=', $minPrice);
+        }
+
+        if (is_int($maxPrice)) {
+            $listings->where('price', '<=', $maxPrice);
+        }
+
+        if (is_string($orderBy)) {
+            $listings->orderBy($orderBy);
         }
 
         return $listings->paginate($perPage);
