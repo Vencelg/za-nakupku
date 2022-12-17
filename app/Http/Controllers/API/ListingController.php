@@ -21,7 +21,7 @@ class ListingController extends Controller
     public function __construct(
         protected ListingServiceInterface $service = new ListingService()
     ) {
-        $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->middleware(['auth:sanctum', 'verified'])->except(['index', 'show']);
     }
 
     /**
