@@ -4,12 +4,17 @@ namespace App\Models;
 
 use App\Notifications\PasswordResetNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use LaravelIdea\Helper\App\Models\_IH_User_C;
+use LaravelIdea\Helper\App\Models\_IH_User_QB;
 
 /**
  * @author Václav Gazda <gazdavaclav@gmail.com>
@@ -68,8 +73,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Listing::class);
     }
 
+    public function reviewsAuthorOf(): HasMany
+    {
+        return $this->hasMany(Review::class, 'created_by_id', 'id');
+    }
+
+    public function reviewsRecipientOf(): HasMany
+    {
+        return $this->hasMany(Review::class, 'user_id', 'id');
+    }
+
     /**
      * @param $token
+     *
      * @return void
      */
     public function sendPasswordResetNotification($token): void
@@ -77,5 +93,10 @@ class User extends Authenticatable implements MustVerifyEmail
         $url = config('app.FRONTEND_PASSWORD_RESET_URL') . $token;
 
         $this->notify(new PasswordResetNotification($url));
+    }
+
+    public static function find(int $id): Model|_IH_User_QB|Collection|array|Builder|User|_IH_User_C|null
+    {
+        return User::with(['listings', 'reviewsAuthorOf', 'reviewsRecipientOf'])->find($id);
     }
 }

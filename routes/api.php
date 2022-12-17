@@ -5,6 +5,7 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ListingController;
 use App\Http\Controllers\API\ListingImageController;
 use App\Http\Controllers\API\MainPageController;
+use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VerificationController;
@@ -29,7 +30,7 @@ Route::group(['prefix' => 'auth'], function () {
         ->middleware('auth:sanctum');
     Route::post('register', [AuthenticationController::class, 'register']);
     Route::post('login', [AuthenticationController::class, 'login']);
-       Route::get('logout', [AuthenticationController::class, 'logout'])
+    Route::get('logout', [AuthenticationController::class, 'logout'])
         ->middleware('auth:sanctum');
 
     Route::group(['prefix' => 'password/reset'], function () {
@@ -50,6 +51,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::apiResources([
     'categories' => CategoryController::class,
     'listings' => ListingController::class,
+    'reviews' => ReviewController::class
 ]);
 
 Route::post('listings/{id}/image/add', [ListingImageController::class, 'store']);
