@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\PasswordResetNotification;
+use DB;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -59,13 +60,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * @var string[]
-     */
-    protected $with = [
-        'listings'
-    ];
-
-    /**
      * @return HasMany
      */
     public function listings(): HasMany
@@ -81,6 +75,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function reviewsRecipientOf(): HasMany
     {
         return $this->hasMany(Review::class, 'user_id', 'id');
+    }
+
+    public function reviewsCount()
+    {
+        return DB::raw('SELECT count(reviews.id) FROM reviews WHERE user_id = 1')->getValue();
     }
 
     /**
