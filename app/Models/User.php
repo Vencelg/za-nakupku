@@ -67,19 +67,20 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Listing::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function reviewsAuthorOf(): HasMany
     {
         return $this->hasMany(Review::class, 'created_by_id', 'id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function reviewsRecipientOf(): HasMany
     {
         return $this->hasMany(Review::class, 'user_id', 'id');
-    }
-
-    public function reviewsCount()
-    {
-        return DB::raw('SELECT count(reviews.id) FROM reviews WHERE user_id = 1')->getValue();
     }
 
     /**
@@ -94,8 +95,15 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new PasswordResetNotification($url));
     }
 
+    /**
+     * @param int $id
+     *
+     * @return Model|_IH_User_QB|Collection|array|Builder|User|_IH_User_C|null
+     */
     public static function find(int $id): Model|_IH_User_QB|Collection|array|Builder|User|_IH_User_C|null
     {
-        return User::with(['listings', 'reviewsAuthorOf', 'reviewsRecipientOf'])->find($id);
+        return User::with(['listings', 'reviewsAuthorOf', 'reviewsRecipientOf'])
+            ->withAvg('reviewsRecipientOf', 'rating')
+            ->find($id);
     }
 }

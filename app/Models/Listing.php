@@ -47,7 +47,7 @@ class Listing extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withAvg('reviewsRecipientOf', 'rating')->withCount('reviewsRecipientOf');
     }
 
     /**
@@ -76,6 +76,11 @@ class Listing extends Model
         return Listing::with(['user.listings', 'category.listings', 'listingImages'])->find($id);
     }
 
+    /**
+     * @param $columns
+     *
+     * @return Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
+     */
     public static function all(
         $columns = ['*']): Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
     {
