@@ -30,7 +30,7 @@ class MainPageController extends Controller
 
         if (!(request()->get('onlyPriceListings') === "true")) {
             $endingListings = Listing::whereStatus(ListingStatusEnum::SOON_ENDING)->get();
-            $category = Category::random()->get();
+            $category = Category::random();
         }
         $upToMaxPrice = Listing::where('price', '<=', $maxPrice)->get();
 

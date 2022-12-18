@@ -33,13 +33,6 @@ class Category extends Model
         return $this->hasMany(Listing::class);
     }
 
-    public static function random(): Builder
-    {
-        $max = Category::count();
-
-        return Category::where('id', rand(1, $max));
-    }
-
     public static function all($columns = ['*']): _IH_Category_C|\Illuminate\Database\Eloquent\Collection|array
     {
         return Category::with('listings')->get($columns);
@@ -48,5 +41,12 @@ class Category extends Model
     public static function find(int $id): Model|\Illuminate\Database\Eloquent\Collection|array|Builder|_IH_Category_QB|Category|null
     {
         return Category::with('listings')->where('id', $id)->first();
+    }
+
+    public static function random(): Model|\Illuminate\Database\Eloquent\Collection|Builder|array|_IH_Category_QB|Category|null
+    {
+        $id = rand(1, Category::count());
+
+        return Category::find($id);
     }
 }
