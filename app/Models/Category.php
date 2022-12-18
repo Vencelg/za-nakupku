@@ -25,10 +25,6 @@ class Category extends Model
         'code'
     ];
 
-    protected $with = [
-        'listings'
-    ];
-
     /**
      * @return HasMany
      */
@@ -42,5 +38,15 @@ class Category extends Model
         $max = Category::count();
 
         return Category::where('id', rand(1, $max));
+    }
+
+    public static function all($columns = ['*']): _IH_Category_C|\Illuminate\Database\Eloquent\Collection|array
+    {
+        return Category::with('listings')->get($columns);
+    }
+
+    public static function find(int $id): Model|\Illuminate\Database\Eloquent\Collection|array|Builder|_IH_Category_QB|Category|null
+    {
+        return Category::with('listings')->where('id', $id)->first();
     }
 }

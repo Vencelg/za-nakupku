@@ -79,7 +79,7 @@ class Listing extends Model
     public static function all(
         $columns = ['*']): Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
     {
-        $listings = Listing::with(['user', 'category.listings', 'listingImages']);
+        $listings = Listing::with(['user', 'category', 'listingImages']);
         $code = request('category');
         $search = request('search');
         $minPrice = is_string(request('minPrice')) ? intval(request('minPrice')) : null;
