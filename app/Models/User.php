@@ -102,8 +102,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public static function find(int $id): Model|_IH_User_QB|Collection|array|Builder|User|_IH_User_C|null
     {
-        return User::with(['listings', 'reviewsAuthorOf', 'reviewsRecipientOf'])
+        return User::with(['listings', 'reviewsAuthorOf.user', 'reviewsRecipientOf.author'])
             ->withAvg('reviewsRecipientOf', 'rating')
+            ->withCount('reviewsRecipientOf')
             ->find($id);
     }
 }
