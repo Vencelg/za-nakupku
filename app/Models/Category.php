@@ -40,7 +40,7 @@ class Category extends Model
 
     public static function find(int $id): Model|\Illuminate\Database\Eloquent\Collection|array|Builder|_IH_Category_QB|Category|null
     {
-        return Category::with('listings')->where('id', $id)->first();
+        return Category::with('listings.user')->where('id', $id)->first();
     }
 
     public static function random(): Model|\Illuminate\Database\Eloquent\Collection|Builder|array|_IH_Category_QB|Category|null

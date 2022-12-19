@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Exceptions\ModelException;
 use DB;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -73,16 +74,16 @@ class Listing extends Model
      */
     public static function find(int $id): Listing|array|Builder|Collection|Model|_IH_Listing_C|_IH_Listing_QB|null
     {
-        return Listing::with(['user.listings', 'category.listings', 'listingImages'])->find($id);
+        return Listing::with(['user.listings', 'category', 'listingImages'])->find($id);
     }
 
     /**
      * @param $columns
      *
-     * @return Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
+     * @return Collection|LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
      */
     public static function all(
-        $columns = ['*']): Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
+        $columns = ['*']): Collection|LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator|_IH_Listing_C|array
     {
         $listings = Listing::with(['user', 'category', 'listingImages']);
         $code = request('category');

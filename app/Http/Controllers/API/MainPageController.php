@@ -19,6 +19,7 @@ class MainPageController extends Controller
 
     /**
      * @param int $maxPrice
+     *
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -29,10 +30,12 @@ class MainPageController extends Controller
         $category = null;
 
         if (!(request()->get('onlyPriceListings') === "true")) {
-            $endingListings = Listing::whereStatus(ListingStatusEnum::SOON_ENDING)->get();
+            $endingListings =
+                Listing::with(['user', 'category', 'listingImages'])->whereStatus(ListingStatusEnum::SOON_ENDING)->get(
+                );
             $category = Category::random();
         }
-        $upToMaxPrice = Listing::where('price', '<=', $maxPrice)->get();
+        $upToMaxPrice = Listing::with(['user', 'category', 'listingImages'])->where('price', '<=', $maxPrice)->get();
 
         return $this->response([
             'soonEnding' => $endingListings,
