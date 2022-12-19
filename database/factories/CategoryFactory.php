@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         $name = fake()->text(15);
-        $icons = ['phonelink-off', 'photo-album', 'camera-front', 'photo-libra', 'pest-control'];
+        $icons = ['electric-scooter', 'emoji-nature', 'dry', 'drive-eta', 'dock'];
 
         return [
             'name' => $name,
