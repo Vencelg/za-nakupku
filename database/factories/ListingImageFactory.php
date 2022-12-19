@@ -30,7 +30,7 @@ class ListingImageFactory extends Factory
         return [
             'listing_id' => $listing->id,
             'name' => str_replace(' ', '_', $listing->name) . '_' . $listing->id . '_' . time() . '_image.jpg',
-            'url' => $images[rand(1, count($images))]
+            'url' => $images[rand(0, 4)]
         ];
     }
 }
