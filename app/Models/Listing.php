@@ -74,7 +74,7 @@ class Listing extends Model
      */
     public static function find(int $id): Listing|array|Builder|Collection|Model|_IH_Listing_C|_IH_Listing_QB|null
     {
-        return Listing::with(['user.listings', 'category', 'listingImages'])->find($id);
+        return Listing::with(['user.listings', 'user.reviewsRecipientOf.author', 'category', 'listingImages'])->find($id);
     }
 
     /**
