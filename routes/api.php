@@ -65,6 +65,8 @@ Route::delete('users/{id}', [UserController::class, 'destroy']);
 Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
 Route::get('search/{search}', [SearchController::class, 'index']);
 
+Route::get('listings/status/all', [ListingController::class, 'checkAllListingStatuses']);
+
 Route::fallback(function () {
     return ResponseService::response([
         'message' => 'HTTP Route not found. Check your URL',

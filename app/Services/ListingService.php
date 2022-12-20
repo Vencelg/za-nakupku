@@ -63,7 +63,7 @@ class ListingService implements ListingServiceInterface
             return;
         }
 
-        if (($interval->days <= 1 && $interval->h == 0) || ($interval->days == 1 && $interval->h <= 23)) {
+        if (($interval->days <= 1 && $interval->h == 0) || ($interval->days == 0 && $interval->h <= 23)) {
             $listing->setAttribute('status', ListingStatusEnum::SOON_ENDING);
             $listing->save();
         }

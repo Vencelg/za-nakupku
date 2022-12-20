@@ -21,7 +21,7 @@ class ListingController extends Controller
     public function __construct(
         protected ListingServiceInterface $service = new ListingService()
     ) {
-        $this->middleware(['auth:sanctum', 'verified'])->except(['index', 'show']);
+        $this->middleware(['auth:sanctum', 'verified'])->except(['index', 'show', 'checkAllListingStatuses']);
     }
 
     /**
@@ -139,6 +139,20 @@ class ListingController extends Controller
 
         $this->service->deleteListingImages($listing);
         $listing->delete();
+        return $this->response([], 200);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function checkAllListingStatuses(): JsonResponse
+    {
+        $listings = Listing::get();
+
+        foreach ($listings as $listing) {
+            $this->service->checkListingStatus($listing);
+        }
+
         return $this->response([], 200);
     }
 }
