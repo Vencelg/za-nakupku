@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthenticationController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\FavouritesController;
 use App\Http\Controllers\API\ListingController;
 use App\Http\Controllers\API\ListingImageController;
 use App\Http\Controllers\API\MainPageController;
@@ -66,6 +67,8 @@ Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
 Route::get('search/{search}', [SearchController::class, 'index']);
 
 Route::get('listings/status/all', [ListingController::class, 'checkAllListingStatuses']);
+Route::get('user/favourite/{listingId}/add', [FavouritesController::class, 'addFavourite']);
+Route::delete('user/favourite/{listingId}/delete', [FavouritesController::class, 'delFavourite']);
 
 Route::fallback(function () {
     return ResponseService::response([

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -83,6 +84,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Review::class, 'user_id', 'id');
     }
 
+    public function favouriteListings(): BelongsToMany
+    {
+        return $this->belongsToMany(Listing::class, 'favourites');
+    }
+
     /**
      * @param $token
      *
@@ -102,7 +108,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public static function find(int $id): Model|_IH_User_QB|Collection|array|Builder|User|_IH_User_C|null
     {
-        return User::with(['listings', 'reviewsAuthorOf.user', 'reviewsRecipientOf.author'])
+        return User::with(['listings', 'reviewsAuthorOf.user', 'reviewsRecipientOf.author', 'favouriteListings'])
             ->withAvg('reviewsRecipientOf', 'rating')
             ->withCount('reviewsRecipientOf')
             ->find($id);
