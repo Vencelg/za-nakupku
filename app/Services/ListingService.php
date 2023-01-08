@@ -72,19 +72,4 @@ class ListingService implements ListingServiceInterface
             $listing->save();
         }
     }
-
-    public function isFavouriteByAuthedUser(Listing $listing): void
-    {
-        $isFavourite = false;
-        if (($user = request()->user()) instanceof User) {
-            foreach ($user->favouriteListings as $favouriteListing) {
-                if ($favouriteListing->id === $listing->id) {
-                    $isFavourite = true;
-                    break;
-                }
-            }
-
-            $listing->setIsFavourite($isFavourite);
-        }
-    }
 }

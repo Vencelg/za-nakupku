@@ -33,11 +33,4 @@ interface ListingServiceInterface
      * @return void
      */
     public function checkListingStatus(Listing $listing): void;
-
-    /**
-     * @param Listing $listing
-     *
-     * @return void
-     */
-    public function isFavouriteByAuthedUser(Listing $listing): void;
 }
