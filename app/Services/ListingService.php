@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\ListingStatusEnum;
 use App\Models\Listing;
 use App\Models\ListingImage;
+use App\Models\User;
 use App\Services\Interfaces\ListingServiceInterface;
 use DateTime;
 use Exception;
@@ -13,6 +14,7 @@ use Storage;
 
 /**
  * Class ListingService
+ *
  * @package App\Services
  */
 class ListingService implements ListingServiceInterface
@@ -28,7 +30,9 @@ class ListingService implements ListingServiceInterface
             'url' => ''
         ]);
 
-        $imageName = str_replace(' ', '_', $listing->name) . '_' . $listing->id . '_' . $newImage->id . time() . '_image.' . $image->extension();
+        $imageName =
+            str_replace(' ', '_', $listing->name) . '_' . $listing->id . '_' . $newImage->id . time() . '_image.'
+            . $image->extension();
         $image->storeAs('public/images', $imageName);
 
         $newImage->setAttribute('name', $imageName);
@@ -66,6 +70,21 @@ class ListingService implements ListingServiceInterface
         if (($interval->days <= 1 && $interval->h == 0) || ($interval->days == 0 && $interval->h <= 23)) {
             $listing->setAttribute('status', ListingStatusEnum::SOON_ENDING);
             $listing->save();
+        }
+    }
+
+    public function isFavouriteByAuthedUser(Listing $listing): void
+    {
+        $isFavourite = false;
+        if (($user = request()->user()) instanceof User) {
+            foreach ($user->favouriteListings as $favouriteListing) {
+                if ($favouriteListing->id === $listing->id) {
+                    $isFavourite = true;
+                    break;
+                }
+            }
+
+            $listing->setIsFavourite($isFavourite);
         }
     }
 }

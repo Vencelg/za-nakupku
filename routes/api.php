@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\ListingPriceEvent;
 use App\Http\Controllers\API\AuthenticationController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\FavouritesController;
@@ -69,6 +70,12 @@ Route::get('search/{search}', [SearchController::class, 'index']);
 Route::get('listings/status/all', [ListingController::class, 'checkAllListingStatuses']);
 Route::get('user/favourite/{listingId}/add', [FavouritesController::class, 'addFavourite']);
 Route::delete('user/favourite/{listingId}/delete', [FavouritesController::class, 'delFavourite']);
+
+//Route::get('playground/{id}', function (int $id) {
+//   event(new ListingPriceEvent($id));
+//
+//   return null;
+//});
 
 Route::fallback(function () {
     return ResponseService::response([

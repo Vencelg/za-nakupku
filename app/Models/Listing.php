@@ -33,14 +33,21 @@ class Listing extends Model
         'price',
         'phone_number',
         'location',
-        'ending'
+        'ending',
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $appends = [
+        'isFavourite'
     ];
 
     /**
      * @var string[]
      */
     protected $with = [
-        'listingImages'
+        'listingImages',
     ];
 
     /**
@@ -68,13 +75,31 @@ class Listing extends Model
     }
 
     /**
+     * @return bool
+     */
+    public function getIsFavouriteAttribute(): bool
+    {
+        if (($user = auth('sanctum')->user()) instanceof User) {
+            foreach ($user->favouriteListings as $favouriteListing) {
+                if ($favouriteListing->id === $this->id) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param int $id
      *
      * @return Listing|array|Builder|Collection|Model|_IH_Listing_C|_IH_Listing_QB|null
      */
     public static function find(int $id): Listing|array|Builder|Collection|Model|_IH_Listing_C|_IH_Listing_QB|null
     {
-        return Listing::with(['user.listings', 'user.reviewsRecipientOf.author', 'category', 'listingImages'])->find($id);
+        return Listing::with(['user.listings', 'user.reviewsRecipientOf.author', 'category', 'listingImages'])->find(
+            $id
+        );
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Enums\ListingStatusEnum;
+use App\Events\ListingPriceEvent;
 use App\Exceptions\ControllerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreListingRequest;
@@ -92,6 +93,8 @@ class ListingController extends Controller
             $this->service->checkListingStatus($listing);
         }
 
+        //$this->service->isFavouriteByAuthedUser($listing);
+
         return $this->response($listing, 200);
     }
 
@@ -118,6 +121,7 @@ class ListingController extends Controller
 
         $listing->update($request->all());
         $listing->save();
+        event(new ListingPriceEvent($id));
 
         return $this->response($listing, 200);
     }

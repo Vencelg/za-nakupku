@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 
 /**
  * Interface ListingServiceInterface
+ *
  * @package App\Services\Interfaces
  */
 interface ListingServiceInterface
@@ -14,20 +15,29 @@ interface ListingServiceInterface
     /**
      * @param UploadedFile $image
      * @param Listing $listing
+     *
      * @return void
      */
     public function saveListingImages(UploadedFile $image, Listing $listing): void;
 
     /**
      * @param Listing $listing
+     *
      * @return void
      */
     public function deleteListingImages(Listing $listing): void;
 
-
     /**
      * @param Listing $listing
+     *
      * @return void
      */
     public function checkListingStatus(Listing $listing): void;
+
+    /**
+     * @param Listing $listing
+     *
+     * @return void
+     */
+    public function isFavouriteByAuthedUser(Listing $listing): void;
 }
