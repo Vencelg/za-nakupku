@@ -42,6 +42,11 @@ class ListingPriceEvent implements ShouldBroadcast
 
     public function broadcastWith(): ?array
     {
-        return Listing::without('listingImages')->where('id', $this->listingId)->first(['price'])?->toArray();
+        $price = Listing::without('listingImages')->where('id', $this->listingId)->first(['price'])
+            ?->toArray()['price'];
+
+        return  [
+            'price' => $price
+        ];
     }
 }
