@@ -21,7 +21,8 @@ class ListingFactory extends Factory
         $user = User::find($id);
 
         return [
-            'category_id' => fake()->numberBetween(1, 10),
+            'category_id' => 1,
+            //'category_id' => fake()->numberBetween(1, 10),
             'user_id' => $user->id,
             'name' => fake()->text(80),
             'info' => fake()->text(500),
