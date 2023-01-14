@@ -34,6 +34,9 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AuthenticationController::class, 'login']);
     Route::get('logout', [AuthenticationController::class, 'logout'])
         ->middleware('auth:sanctum');
+    Route::get('user/favourite', [AuthenticationController::class, 'favouriteListings'])
+        ->middleware('auth:sanctum');
+
 
     Route::group(['prefix' => 'password/reset'], function () {
         Route::post('resend', [AuthenticationController::class, 'sendPasswordReset']);
@@ -58,18 +61,18 @@ Route::apiResources([
 
 Route::post('listings/{id}/image/add', [ListingImageController::class, 'store']);
 Route::post('listings/{id}/image/delete', [ListingImageController::class, 'delete']);
+Route::get('listings/status/all', [ListingController::class, 'checkAllListingStatuses']);
+
 
 Route::get('users/{id}', [UserController::class, 'show']);
 Route::put('users/{id}', [UserController::class, 'update']);
 Route::patch('users/{id}', [UserController::class, 'update']);
 Route::delete('users/{id}', [UserController::class, 'destroy']);
+Route::get('user/favourite/{listingId}/add', [FavouritesController::class, 'addFavourite']);
+Route::delete('user/favourite/{listingId}/delete', [FavouritesController::class, 'delFavourite']);
 
 Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
 Route::get('search/{search}', [SearchController::class, 'index']);
-
-Route::get('listings/status/all', [ListingController::class, 'checkAllListingStatuses']);
-Route::get('user/favourite/{listingId}/add', [FavouritesController::class, 'addFavourite']);
-Route::delete('user/favourite/{listingId}/delete', [FavouritesController::class, 'delFavourite']);
 
 //Route::get('playground/{id}', function (int $id) {
 //   event(new ListingPriceEvent($id));

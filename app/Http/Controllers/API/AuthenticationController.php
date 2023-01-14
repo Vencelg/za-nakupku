@@ -21,6 +21,11 @@ use Illuminate\Support\Facades\Password;
  */
 class AuthenticationController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function currentUser(Request $request): JsonResponse
     {
         return $this->response($request->user(), 200);
@@ -117,5 +122,17 @@ class AuthenticationController extends Controller
         }
 
         return $this->response(__($status), $code, $errors);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function favouriteListings(Request $request): JsonResponse
+    {
+        $listings = $request->user()->favouriteListings;
+
+        return $this->response($listings, 200);
     }
 }
