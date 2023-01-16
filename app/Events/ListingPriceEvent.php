@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Listing;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -20,7 +21,11 @@ class ListingPriceEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(protected int $listingId)
+    public function __construct(
+        protected int $price,
+        protected int $listingId,
+        protected User $user
+    )
     {
         //
     }
@@ -42,11 +47,9 @@ class ListingPriceEvent implements ShouldBroadcast
 
     public function broadcastWith(): ?array
     {
-        $price = Listing::without('listingImages')->where('id', $this->listingId)->first(['price'])
-            ?->toArray()['price'];
-
         return  [
-            'price' => $price
+            'price' => $this->price,
+            'user' => $this->user
         ];
     }
 }

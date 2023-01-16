@@ -33,4 +33,11 @@ interface ListingServiceInterface
      * @return void
      */
     public function checkListingStatus(Listing $listing): void;
+
+    /**
+     * @param Listing $listing
+     *
+     * @return void
+     */
+    public function addTimeToListing(Listing $listing): void;
 }

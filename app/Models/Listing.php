@@ -75,6 +75,19 @@ class Listing extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function highestPaymentAmount(): int
+    {
+        return $this->payments()->max('amount') ?? $this->price;
+    }
+
+    /**
      * @return bool
      */
     public function getIsFavouriteAttribute(): bool

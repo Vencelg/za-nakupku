@@ -121,7 +121,6 @@ class ListingController extends Controller
 
         $listing->update($request->all());
         $listing->save();
-        event(new ListingPriceEvent($id));
 
         return $this->response($listing, 200);
     }

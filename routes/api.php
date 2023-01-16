@@ -7,6 +7,7 @@ use App\Http\Controllers\API\FavouritesController;
 use App\Http\Controllers\API\ListingController;
 use App\Http\Controllers\API\ListingImageController;
 use App\Http\Controllers\API\MainPageController;
+use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\UserController;
@@ -73,6 +74,8 @@ Route::delete('user/favourite/{listingId}/delete', [FavouritesController::class,
 
 Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
 Route::get('search/{search}', [SearchController::class, 'index']);
+
+Route::post('payments', [PaymentController::class, 'store']);
 
 //Route::get('playground/{id}', function (int $id) {
 //   event(new ListingPriceEvent($id));

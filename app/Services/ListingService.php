@@ -72,4 +72,12 @@ class ListingService implements ListingServiceInterface
             $listing->save();
         }
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function addTimeToListing(Listing $listing): void
+    {
+        // TODO: Implement addTimeToListing() method.
+    }
 }
