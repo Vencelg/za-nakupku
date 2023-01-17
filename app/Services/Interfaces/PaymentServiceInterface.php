@@ -12,5 +12,5 @@ use App\Models\Payment;
  */
 interface PaymentServiceInterface
 {
-    public function checkPaymentAmount(Payment $payment, Listing $listing): void;
+    public function checkPayment(Payment $payment, Listing $listing): void;
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\ListingStatusEnum;
 use App\Events\ListingPriceEvent;
+use App\Events\ListingStatusEvent;
 use App\Exceptions\ControllerException;
 use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
@@ -48,6 +49,7 @@ class PaymentController extends Controller
             throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' not found', 400);
         }
 
+        $this->listingService->checkListingStatus($listing);
         if ($listing->status == ListingStatusEnum::ENDED) {
             throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' is expired', 400);
         }
@@ -58,7 +60,7 @@ class PaymentController extends Controller
             'amount' => $request->input('amount'),
         ]);
 
-        $this->service->checkPaymentAmount($payment, $listing);
+        $this->service->checkPayment($payment, $listing);
         $this->listingService->addTimeToListing($listing);
 
         $listing->setAttribute('price', $payment->amount);
@@ -66,6 +68,7 @@ class PaymentController extends Controller
         $payment->save();
 
         event(new ListingPriceEvent($payment->amount, $listing->id, $payment->user));
+        event(new ListingStatusEvent($listing->id, $listing->status, $listing->ending));
 
         return $this->response([], 200);
     }
