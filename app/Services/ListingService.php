@@ -7,6 +7,7 @@ use App\Models\Listing;
 use App\Models\ListingImage;
 use App\Models\User;
 use App\Services\Interfaces\ListingServiceInterface;
+use Carbon\Carbon;
 use DateTime;
 use Exception;
 use Illuminate\Http\UploadedFile;
@@ -75,9 +76,16 @@ class ListingService implements ListingServiceInterface
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function addTimeToListing(Listing $listing): void
     {
-        // TODO: Implement addTimeToListing() method.
+        $date2 = Carbon::createFromFormat('Y-m-d H:i:s', $listing->ending);
+
+        if ($date2->isCurrentMinute()) {
+            $date2->addSeconds(10);
+            $listing->setAttribute('ending', $date2);
+            $listing->save();
+        }
     }
 }

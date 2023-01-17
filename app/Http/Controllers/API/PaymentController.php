@@ -39,6 +39,7 @@ class PaymentController extends Controller
      *
      * @return JsonResponse
      * @throws ServiceException|ControllerException
+     * @throws \Exception
      */
     public function store(StorePaymentRequest $request): JsonResponse
     {
@@ -58,6 +59,7 @@ class PaymentController extends Controller
         ]);
 
         $this->service->checkPaymentAmount($payment, $listing);
+        $this->listingService->addTimeToListing($listing);
 
         $listing->setAttribute('price', $payment->amount);
         $listing->save();
