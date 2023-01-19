@@ -89,7 +89,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function favouriteListings(): BelongsToMany
     {
-        return $this->belongsToMany(Listing::class, 'favourites');
+        return $this->belongsToMany(Listing::class, 'favourites')->with(['user' => function ($query) {
+            $query->withCount('reviewsRecipientOf')->withAvg('reviewsRecipientOf', 'rating');
+        }]);
     }
 
     /**
