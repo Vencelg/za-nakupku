@@ -64,24 +64,22 @@ Route::post('listings/{id}/image/add', [ListingImageController::class, 'store'])
 Route::post('listings/{id}/image/delete', [ListingImageController::class, 'delete']);
 Route::get('listings/status/all', [ListingController::class, 'checkAllListingStatuses']);
 
-
 Route::get('users/{id}', [UserController::class, 'show']);
 Route::put('users/{id}', [UserController::class, 'update']);
 Route::patch('users/{id}', [UserController::class, 'update']);
 Route::delete('users/{id}', [UserController::class, 'destroy']);
 Route::get('user/favourite/{listingId}/add', [FavouritesController::class, 'addFavourite']);
 Route::delete('user/favourite/{listingId}/delete', [FavouritesController::class, 'delFavourite']);
+Route::get('user/{id}/listings', [UserController::class, 'listingsUserBidsOn']);
 
 Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
 Route::get('search/{search}', [SearchController::class, 'index']);
 
 Route::post('payments', [PaymentController::class, 'store']);
 
-//Route::get('playground/{id}', function (int $id) {
-//   event(new ListingPriceEvent($id));
-//
-//   return null;
-//});
+Route::post('playground', function (Request $request) {
+   return response()->json($request->all());
+});
 
 Route::fallback(function () {
     return ResponseService::response([

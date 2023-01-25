@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\ListingStatusEnum;
 use App\Exceptions\ControllerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Listing;
 use App\Models\User;
 use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
@@ -82,5 +84,23 @@ class UserController extends Controller
         $user->delete();
 
         return $this->response([], 200);
+    }
+
+    public function listingsUserBidsOn(int $id): JsonResponse
+    {
+        $endedListings = Listing::whereHas('payments', function ($query) use ($id) {
+            $query->where('user_id', $id)
+                ->where('status', ListingStatusEnum::ENDED);
+        })->get();
+
+        $activeListings = Listing::whereHas('payments', function ($query) use ($id) {
+            $query->where('user_id', $id)
+                ->whereIn('status', [ListingStatusEnum::ACTIVE, ListingStatusEnum::SOON_ENDING]);
+        })->get();
+
+        return $this->response([
+            'ended' => $endedListings,
+            'active' => $activeListings
+        ], 200);
     }
 }
