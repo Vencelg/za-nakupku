@@ -31,11 +31,8 @@ class ListingService implements ListingServiceInterface
             'url' => ''
         ]);
 
-        $imageName =
-            str_replace(' ', '_', $listing->name) . '_' . $listing->id . '_' . $newImage->id . time() . '_image.'
-            . $image->extension();
-        $image->storeAs('public/images', $imageName);
-
+        $imageName = uniqid() . "_" . $image->getBasename() . '.' . $image->extension();
+        $image->storeAs(('public/images'), $imageName);
         $newImage->setAttribute('name', $imageName);
         $newImage->setAttribute('url', url('/') . Storage::url('public/images/' . $imageName));
         $newImage->save();
