@@ -31,7 +31,7 @@ class ListingService implements ListingServiceInterface
             'url' => ''
         ]);
 
-        $imageName = uniqid() . "_" . $image->getBasename() . '.' . $image->extension();
+        $imageName = uniqid() . "_" . $image->getBasename() . '.' . $image->getClientOriginalExtension();
         $image->storeAs(('public/images'), $imageName);
         $newImage->setAttribute('name', $imageName);
         $newImage->setAttribute('url', url('/') . Storage::url('public/images/' . $imageName));
