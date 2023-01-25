@@ -64,12 +64,11 @@ class ListingController extends Controller
         $newListing->save();
 
         $images = $request->file('images');
-        $this->service->saveListingImages($images, $newListing);
-        /*if ($images !== null) {
+        if ($images !== null) {
             foreach ($images as $image) {
                 $this->service->saveListingImages($image, $newListing);
             }
-        }*/
+        }
 
         return $this->response($newListing, 200);
     }

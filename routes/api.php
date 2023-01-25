@@ -78,7 +78,10 @@ Route::get('search/{search}', [SearchController::class, 'index']);
 Route::post('payments', [PaymentController::class, 'store']);
 
 Route::post('playground', function (Request $request) {
-   return response()->json($request->all());
+   return response()->json([
+       'headers' => $request->headers,
+       'body' => $request->all()
+   ]);
 });
 
 Route::fallback(function () {
