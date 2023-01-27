@@ -37,7 +37,9 @@ Route::group(['prefix' => 'auth'], function () {
         ->middleware('auth:sanctum');
     Route::get('user/favourite', [AuthenticationController::class, 'favouriteListings'])
         ->middleware('auth:sanctum');
-    Route::get('user/listings', [AuthenticationController::class, 'listingsUserBidsOn'])
+    Route::get('user/listings/bidding', [AuthenticationController::class, 'listingsUserBidsOn'])
+        ->middleware('auth:sanctum');
+    Route::get('user/listings', [AuthenticationController::class, 'authedUserListings'])
         ->middleware('auth:sanctum');
 
 

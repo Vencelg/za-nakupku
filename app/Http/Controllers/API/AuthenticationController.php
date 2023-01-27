@@ -162,4 +162,9 @@ class AuthenticationController extends Controller
             'active' => $activeListings
         ], 200);
     }
+
+    public function authedUserListings(Request $request): JsonResponse
+    {
+        return $this->response($request->user()->listings, 200);
+    }
 }
