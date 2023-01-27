@@ -40,7 +40,8 @@ class Listing extends Model
      * @var string[]
      */
     protected $appends = [
-        'isFavourite'
+        'isFavourite',
+        'winningUserId'
     ];
 
     /**
@@ -88,6 +89,14 @@ class Listing extends Model
     }
 
     /**
+     * @return int|null
+     */
+    public function getWinningUserIdAttribute(): ?int
+    {
+        return $this->payments()->where('listing_id', $this->id)->orderBy('amount', 'desc')->first()?->user_id;
+    }
+
+    /**
      * @return bool
      */
     public function getIsFavouriteAttribute(): bool
@@ -110,7 +119,9 @@ class Listing extends Model
      */
     public static function find(int $id): Listing|array|Builder|Collection|Model|_IH_Listing_C|_IH_Listing_QB|null
     {
-        return Listing::with(['user.listings', 'user.reviewsRecipientOf.author', 'category', 'listingImages'])->find(
+        return Listing::with(
+            ['user.listings', 'user.reviewsRecipientOf.author', 'category', 'listingImages']
+        )->find(
             $id
         );
     }
