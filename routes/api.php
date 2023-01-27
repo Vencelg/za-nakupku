@@ -37,6 +37,8 @@ Route::group(['prefix' => 'auth'], function () {
         ->middleware('auth:sanctum');
     Route::get('user/favourite', [AuthenticationController::class, 'favouriteListings'])
         ->middleware('auth:sanctum');
+    Route::get('user/listings', [AuthenticationController::class, 'listingsUserBidsOn'])
+        ->middleware('auth:sanctum');
 
 
     Route::group(['prefix' => 'password/reset'], function () {
@@ -70,12 +72,11 @@ Route::patch('users/{id}', [UserController::class, 'update']);
 Route::delete('users/{id}', [UserController::class, 'destroy']);
 Route::get('user/favourite/{listingId}/add', [FavouritesController::class, 'addFavourite']);
 Route::delete('user/favourite/{listingId}/delete', [FavouritesController::class, 'delFavourite']);
-Route::get('user/{id}/listings', [UserController::class, 'listingsUserBidsOn']);
 
 Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
 Route::get('search/{search}', [SearchController::class, 'index']);
 
-Route::post('payments', [PaymentController::class, 'store']);
+Route::post('payments', [PaymentController::class, 'payment']);
 
 Route::post('playground', function (Request $request) {
    return response()->json([

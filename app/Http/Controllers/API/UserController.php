@@ -85,22 +85,4 @@ class UserController extends Controller
 
         return $this->response([], 200);
     }
-
-    public function listingsUserBidsOn(int $id): JsonResponse
-    {
-        $endedListings = Listing::whereHas('payments', function ($query) use ($id) {
-            $query->where('user_id', $id)
-                ->where('status', ListingStatusEnum::ENDED);
-        })->get();
-
-        $activeListings = Listing::whereHas('payments', function ($query) use ($id) {
-            $query->where('user_id', $id)
-                ->whereIn('status', [ListingStatusEnum::ACTIVE, ListingStatusEnum::SOON_ENDING]);
-        })->get();
-
-        return $this->response([
-            'ended' => $endedListings,
-            'active' => $activeListings
-        ], 200);
-    }
 }

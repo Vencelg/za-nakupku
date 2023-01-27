@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\ListingStatusEnum;
 use App\Exceptions\ControllerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\PasswordResetRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\SendPasswordResetRequest;
+use App\Models\Listing;
 use App\Models\User;
 use DB;
 use Hash;
@@ -33,6 +35,7 @@ class AuthenticationController extends Controller
 
     /**
      * @param RegisterUserRequest $request
+     *
      * @return JsonResponse
      */
     public function register(RegisterUserRequest $request): JsonResponse
@@ -51,6 +54,7 @@ class AuthenticationController extends Controller
 
     /**
      * @param LoginUserRequest $request
+     *
      * @return JsonResponse
      * @throws ControllerException
      */
@@ -72,6 +76,7 @@ class AuthenticationController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function logout(Request $request): JsonResponse
@@ -86,6 +91,7 @@ class AuthenticationController extends Controller
 
     /**
      * @param SendPasswordResetRequest $request
+     *
      * @return JsonResponse
      */
     public function sendPasswordReset(SendPasswordResetRequest $request): JsonResponse
@@ -99,19 +105,22 @@ class AuthenticationController extends Controller
 
     /**
      * @param PasswordResetRequest $request
+     *
      * @return JsonResponse
      */
     public function passwordReset(PasswordResetRequest $request): JsonResponse
     {
-        $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ]);
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ]);
 
-            $user->save();
+                $user->save();
 
-            event(new PasswordReset($user));
-        }
+                event(new PasswordReset($user));
+            }
         );
 
         $code = 200;
@@ -134,5 +143,23 @@ class AuthenticationController extends Controller
         $listings = $request->user()->favouriteListings;
 
         return $this->response($listings, 200);
+    }
+
+    public function listingsUserBidsOn(Request $request): JsonResponse
+    {
+        $endedListings = Listing::whereHas('payments', function ($query) use ($request) {
+            $query->where('user_id', $request->user()->id)
+                ->where('status', ListingStatusEnum::ENDED);
+        })->get();
+
+        $activeListings = Listing::whereHas('payments', function ($query) use ($request) {
+            $query->where('user_id', $request->user()->id)
+                ->whereIn('status', [ListingStatusEnum::ACTIVE, ListingStatusEnum::SOON_ENDING]);
+        })->get();
+
+        return $this->response([
+            'ended' => $endedListings,
+            'active' => $activeListings
+        ], 200);
     }
 }
