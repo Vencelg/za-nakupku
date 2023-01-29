@@ -78,7 +78,8 @@ Route::delete('user/favourite/{listingId}/delete', [FavouritesController::class,
 Route::get('mainpage/{maxPrice}', [MainPageController::class, 'index']);
 Route::get('search/{search}', [SearchController::class, 'index']);
 
-Route::post('payments', [PaymentController::class, 'payment']);
+Route::post('payments/bid', [PaymentController::class, 'bid']);
+//Route::post('payments/checkout', [PaymentController::class, 'makePayment']);
 
 Route::post('playground', function (Request $request) {
    return response()->json([

@@ -8,15 +8,20 @@ use App\Events\ListingStatusEvent;
 use App\Exceptions\ControllerException;
 use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePaymentRequest;
+use App\Http\Requests\MakePaymentRequest;
+use App\Http\Requests\StoreBidRequest;
 use App\Models\Listing;
 use App\Models\Payment;
 use App\Services\Interfaces\ListingServiceInterface;
 use App\Services\Interfaces\PaymentServiceInterface;
 use App\Services\ListingService;
 use App\Services\PaymentService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Stripe\Charge;
+use Stripe\Stripe;
+use Stripe\Token;
 
 /**
  * PaymentController.
@@ -27,6 +32,7 @@ class PaymentController extends Controller
 {
     /**
      * @param PaymentServiceInterface $service
+     * @param ListingServiceInterface $listingService
      */
     public function __construct(
         protected PaymentServiceInterface $service = new PaymentService(),
@@ -36,13 +42,13 @@ class PaymentController extends Controller
     }
 
     /**
-     * @param StorePaymentRequest $request
+     * @param MakePaymentRequest $request
      *
      * @return JsonResponse
-     * @throws ServiceException|ControllerException
-     * @throws \Exception
+     * @throws ControllerException
+     * @throws Exception
      */
-    public function store(StorePaymentRequest $request): JsonResponse
+    /*public function makePayment(MakePaymentRequest $request): JsonResponse
     {
         $listing = Listing::find($request->input('listing_id'));
         if (!($listing instanceof Listing)) {
@@ -50,8 +56,55 @@ class PaymentController extends Controller
         }
 
         $this->listingService->checkListingStatus($listing);
-        if ($listing->status == ListingStatusEnum::ENDED) {
-            throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' is expired', 400);
+        if ($listing->status !== ListingStatusEnum::ENDED) {
+            throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' has not ended yet',
+                400);
+        }
+
+        try {
+            Stripe::setApiKey(config('services.stripe.secret'));
+
+            $token = Token::create([
+                'card' => [
+                    'number' => $request->input('card_number'),
+                    'exp_month' => $request->input('exp_month'),
+                    'exp_year' => $request->input('exp_year'),
+                    'cvc' => $request->input('cvc'),
+                ],
+            ]);
+
+            $charge = Charge::create([
+                'amount' => $listing->price,
+                'currency' => 'czk',
+                'source' => $token,
+                'description' => 'Charge for product ' . $listing->name . ' from ZaNákupku.cz',
+            ]);
+        } catch (Exception $exception) {
+            throw new ControllerException('ERROR DURING PAYMENT', 400);
+        }
+
+        return $this->response($charge->status, 200);
+    }
+*/
+    /**
+     * @param StoreBidRequest $request
+     *
+     * @return JsonResponse
+     * @throws ControllerException
+     * @throws ServiceException
+     * @throws Exception
+     */
+    public function bid(StoreBidRequest $request): JsonResponse
+    {
+        $listing = Listing::find($request->input('listing_id'));
+        if (!($listing instanceof Listing)) {
+            throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' not found', 400);
+        }
+
+        $this->listingService->checkListingStatus($listing);
+        if ($listing->status === ListingStatusEnum::ENDED) {
+            throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' has ended',
+                400);
         }
 
         $payment = new Payment([
