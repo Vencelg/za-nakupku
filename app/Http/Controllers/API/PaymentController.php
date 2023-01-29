@@ -121,7 +121,7 @@ class PaymentController extends Controller
         $payment->save();
 
         event(new ListingPriceEvent($payment->amount, $listing->id, $payment->user));
-        event(new ListingStatusEvent($listing->id, $listing->status, $listing->ending));
+        event(new ListingStatusEvent($listing->id, ListingStatusEnum::getStatus($listing->status), $listing->ending));
 
         return $this->response([], 200);
     }
