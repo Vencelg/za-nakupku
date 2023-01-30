@@ -26,7 +26,7 @@ class ListingFactory extends Factory
             'user_id' => $user->id,
             'name' => fake()->text(80),
             'info' => fake()->text(500),
-            'price' => 15000,
+            'price' => 15,
             'phone_number' => $user->phone_number,
             'location' => $user->location,
             'ending' => fake()->dateTimeBetween('now', '+10 days')
