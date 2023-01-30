@@ -66,7 +66,7 @@ class PaymentController extends Controller
 
             $token = Token::create([
                 'card' => [
-                    'number' => $request->input('card_number'),
+                    'number' => "4242424242424242",
                     'exp_month' => $request->input('exp_month'),
                     'exp_year' => $request->input('exp_year'),
                     'cvc' => $request->input('cvc'),
