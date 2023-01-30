@@ -61,6 +61,11 @@ class PaymentController extends Controller
                 400);
         }
 
+        if ($listing->sold) {
+            throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' has been sold',
+                400);
+        }
+
         try {
             Stripe::setApiKey(config('services.stripe.secret'));
 
