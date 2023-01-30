@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->string('location');
             $table->timestamp('ending');
             $table->tinyInteger('status')->default(2);
+            $table->boolean('sold')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

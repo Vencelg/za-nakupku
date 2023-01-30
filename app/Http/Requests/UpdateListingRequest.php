@@ -32,7 +32,8 @@ class UpdateListingRequest extends FormRequest
                 'price' => ['required', 'integer'],
                 'phone_number' => ['required', 'string'],
                 'location' => ['required', 'string'],
-                'ending' => ['required', 'date_format:Y-m-d H:i:s']
+                'ending' => ['required', 'date_format:Y-m-d H:i:s'],
+                'sold' => ['required', 'bool']
             ];
         }
 
@@ -45,7 +46,8 @@ class UpdateListingRequest extends FormRequest
                 'price' => ['integer'],
                 'phone_number' => ['string'],
                 'location' => ['string'],
-                'ending' => ['date_format:Y-m-d H:i:s']
+                'ending' => ['date_format:Y-m-d H:i:s'],
+                'sold' => ['bool']
             ];
         }
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0357596297fb5d64037cfe8d8b3c14f9",
+    "content-hash": "b10578cba75f204784ab92ee42d926ee",
     "packages": [
         {
             "name": "beyondcode/laravel-websockets",
@@ -1912,6 +1912,77 @@
                 }
             ],
             "time": "2022-04-17T13:12:02+00:00"
+        },
+        {
+            "name": "marvinlabs/laravel-luhn",
+            "version": "v1.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marvinlabs/laravel-luhn.git",
+                "reference": "ccdbe7682080a2c41238fc33729a6aebca8b37f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marvinlabs/laravel-luhn/zipball/ccdbe7682080a2c41238fc33729a6aebca8b37f6",
+                "reference": "ccdbe7682080a2c41238fc33729a6aebca8b37f6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.5|^6.0|^7.0|^8.0|^9.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "mockery/mockery": ">=0.9",
+                "orchestra/testbench": "^3.6|^4.0|^5.0|^6.0|^7.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MarvinLabs\\Luhn\\LuhnServiceProvider"
+                    ],
+                    "aliases": {
+                        "Luhn": "MarvinLabs\\Luhn\\Facades\\Luhn"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MarvinLabs\\Luhn\\": "src/Luhn"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vincent Mimoun-Prat",
+                    "email": "contact@vincentprat.info",
+                    "homepage": "https://vincentprat.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Luhn algorithm for Laravel",
+            "keywords": [
+                "Siren",
+                "Siret",
+                "credit card",
+                "laravel",
+                "luhn"
+            ],
+            "support": {
+                "issues": "https://github.com/marvinlabs/laravel-luhn/issues",
+                "source": "https://github.com/marvinlabs/laravel-luhn/tree/v1.0.10"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/vpratfr",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-02-16T14:09:50+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4186,6 +4257,67 @@
                 "source": "https://github.com/ringcentral/psr7/tree/master"
             },
             "time": "2018-05-29T20:21:04+00:00"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v10.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "87def896d9a2e2914871408277d67432cb112f71"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/87def896d9a2e2914871408277d67432cb112f71",
+                "reference": "87def896d9a2e2914871408277d67432cb112f71",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.5.0",
+                "php-coveralls/php-coveralls": "^2.5",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "support": {
+                "issues": "https://github.com/stripe/stripe-php/issues",
+                "source": "https://github.com/stripe/stripe-php/tree/v10.4.0"
+            },
+            "time": "2023-01-19T19:18:38+00:00"
         },
         {
             "name": "symfony/console",

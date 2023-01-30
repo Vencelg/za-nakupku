@@ -48,7 +48,7 @@ class PaymentController extends Controller
      * @throws ControllerException
      * @throws Exception
      */
-    /*public function makePayment(MakePaymentRequest $request): JsonResponse
+    public function makePayment(MakePaymentRequest $request): JsonResponse
     {
         $listing = Listing::find($request->input('listing_id'));
         if (!($listing instanceof Listing)) {
@@ -74,18 +74,21 @@ class PaymentController extends Controller
             ]);
 
             $charge = Charge::create([
-                'amount' => $listing->price,
+                'amount' => $listing->price . 0 . 0,
                 'currency' => 'czk',
                 'source' => $token,
                 'description' => 'Charge for product ' . $listing->name . ' from ZaNákupku.cz',
             ]);
         } catch (Exception $exception) {
-            throw new ControllerException('ERROR DURING PAYMENT', 400);
+            throw new ControllerException($exception->getMessage(), 400);
         }
+
+        $listing->setAttribute('sold', true);
+        $listing->save();
 
         return $this->response($charge->status, 200);
     }
-*/
+
     /**
      * @param StoreBidRequest $request
      *
