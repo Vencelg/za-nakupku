@@ -150,12 +150,12 @@ class AuthenticationController extends Controller
         $endedListings = Listing::whereHas('payments', function ($query) use ($request) {
             $query->where('user_id', $request->user()->id)
                 ->where('status', ListingStatusEnum::ENDED);
-        })->get();
+        })->orderBy('created_at', 'desc')->get();
 
         $activeListings = Listing::whereHas('payments', function ($query) use ($request) {
             $query->where('user_id', $request->user()->id)
                 ->whereIn('status', [ListingStatusEnum::ACTIVE, ListingStatusEnum::SOON_ENDING]);
-        })->get();
+        })->orderBy('created_at', 'desc')->get();
 
         return $this->response([
             'ended' => $endedListings,
@@ -165,6 +165,6 @@ class AuthenticationController extends Controller
 
     public function authedUserListings(Request $request): JsonResponse
     {
-        return $this->response($request->user()->listings, 200);
+        return $this->response($request->user()->listings()->orderBy('created_at', 'desc')->get(), 200);
     }
 }
