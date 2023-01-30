@@ -30,7 +30,7 @@ class MakePaymentRequest extends FormRequest
                 'required',
                 'numeric',
                 'digits:16',
-                'luhn'
+                //'luhn'
             ],
             'exp_month' => [
                 'required',
