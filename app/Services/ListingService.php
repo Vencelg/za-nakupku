@@ -60,13 +60,13 @@ class ListingService implements ListingServiceInterface
         $interval = $date2->diff($date1);
 
         if ($interval->invert <= 0) {
-            $listing->setAttribute('status', ListingStatusEnum::ENDED);
+            $listing->setAttribute('status', ListingStatusEnum::ENDED->value);
             $listing->save();
             return;
         }
 
         if (($interval->days <= 1 && $interval->h == 0) || ($interval->days == 0 && $interval->h <= 23)) {
-            $listing->setAttribute('status', ListingStatusEnum::SOON_ENDING);
+            $listing->setAttribute('status', ListingStatusEnum::SOON_ENDING->value);
             $listing->save();
         }
     }

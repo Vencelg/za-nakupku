@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ListingStatusEnum;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -24,7 +25,7 @@ return new class extends Migration {
             $table->string('phone_number');
             $table->string('location');
             $table->timestamp('ending');
-            $table->tinyInteger('status')->default(2);
+            $table->tinyInteger('status')->default(ListingStatusEnum::ACTIVE->value);
             $table->boolean('sold')->default(false);
             $table->timestamps();
             $table->softDeletes();

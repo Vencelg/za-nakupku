@@ -139,6 +139,7 @@ class Listing extends Model
         $minPrice = is_string(request('minPrice')) ? intval(request('minPrice')) : null;
         $maxPrice = is_string(request('maxPrice')) ? intval(request('maxPrice')) : null;
         $orderBy = request('orderBy');
+        $orderByDirection = request('orderByDirection');
         $perPage = (int) request('perPage');
 
         if (is_string($code)) {
@@ -159,10 +160,6 @@ class Listing extends Model
             $listings->where('price', '<=', $maxPrice);
         }
 
-        if (is_string($orderBy)) {
-            $listings->orderBy($orderBy);
-        }
-
-        return $listings->paginate($perPage);
+        return $listings->orderBy($orderBy ?? 'created_at', $orderByDirection ?? 'asc')->paginate($perPage);
     }
 }

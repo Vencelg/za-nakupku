@@ -57,13 +57,17 @@ class PaymentController extends Controller
 
         $this->listingService->checkListingStatus($listing);
         if ($listing->status !== ListingStatusEnum::ENDED) {
-            throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' has not ended yet',
-                400);
+            throw new ControllerException(
+                'Listing with id: ' . $request->input('listing_id') . ' has not ended yet',
+                400
+            );
         }
 
         if ($listing->sold) {
-            throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' has been sold',
-                400);
+            throw new ControllerException(
+                'Listing with id: ' . $request->input('listing_id') . ' has been sold',
+                400
+            );
         }
 
         try {
@@ -71,7 +75,7 @@ class PaymentController extends Controller
 
             $token = Token::create([
                 'card' => [
-                    'number' => "4242424242424242",
+                    'number' => '4242424242424242',
                     'exp_month' => $request->input('exp_month'),
                     'exp_year' => $request->input('exp_year'),
                     'cvc' => $request->input('cvc'),
@@ -111,8 +115,10 @@ class PaymentController extends Controller
 
         $this->listingService->checkListingStatus($listing);
         if ($listing->status === ListingStatusEnum::ENDED) {
-            throw new ControllerException('Listing with id: ' . $request->input('listing_id') . ' has ended',
-                400);
+            throw new ControllerException(
+                'Listing with id: ' . $request->input('listing_id') . ' has ended',
+                400
+            );
         }
 
         $payment = new Payment([
@@ -129,7 +135,12 @@ class PaymentController extends Controller
         $payment->save();
 
         event(new ListingPriceEvent($payment->amount, $listing->id, $payment->user));
-        event(new ListingStatusEvent($listing->id, ListingStatusEnum::getStatus($listing->status), $listing->ending));
+        event(
+            new ListingStatusEvent(
+                $listing->id, ListingStatusEnum::getStatus($listing->status),
+                $listing->ending
+            )
+        );
 
         return $this->response([], 200);
     }
