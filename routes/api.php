@@ -84,7 +84,7 @@ Route::post('payments/checkout', [PaymentController::class, 'makePayment']);
 Route::post('playground', function (Request $request) {
    return response()->json([
        'headers' => $request->headers,
-       'body' => $request->all()
+       'body' => $_REQUEST
    ]);
 });
 
