@@ -56,7 +56,7 @@ class PaymentController extends Controller
         }
 
         $this->listingService->checkListingStatus($listing);
-        if ($listing->status !== ListingStatusEnum::ENDED) {
+        if ($listing->status != ListingStatusEnum::ENDED->value) {
             throw new ControllerException(
                 'Listing with id: ' . $request->input('listing_id') . ' has not ended yet',
                 400
@@ -114,7 +114,7 @@ class PaymentController extends Controller
         }
 
         $this->listingService->checkListingStatus($listing);
-        if ($listing->status === ListingStatusEnum::ENDED) {
+        if ($listing->status == ListingStatusEnum::ENDED->value) {
             throw new ControllerException(
                 'Listing with id: ' . $request->input('listing_id') . ' has ended',
                 400

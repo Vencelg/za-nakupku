@@ -31,7 +31,7 @@ class MainPageController extends Controller
 
         if (!(request()->get('onlyPriceListings') === "true")) {
             $endingListings =
-                Listing::with(['user', 'category', 'listingImages'])->whereStatus(ListingStatusEnum::SOON_ENDING)
+                Listing::with(['user', 'category', 'listingImages'])->whereStatus(ListingStatusEnum::SOON_ENDING->value)
                     ->orderBy('ending')->get(
                 );
             $category = Category::random();

@@ -89,7 +89,7 @@ class ListingController extends Controller
             throw new ControllerException('Listing with id: ' . $id . ' not found', 400);
         }
 
-        if ($listing->status != ListingStatusEnum::ENDED) {
+        if ($listing->status != ListingStatusEnum::ENDED->value) {
             $this->service->checkListingStatus($listing);
         }
 
@@ -115,7 +115,7 @@ class ListingController extends Controller
             throw new ControllerException('Listing with id: ' . $id . ' not found', 400);
         }
 
-        if ($listing->status != ListingStatusEnum::ENDED) {
+        if ($listing->status != ListingStatusEnum::ENDED->value) {
             $this->service->checkListingStatus($listing);
         }
 

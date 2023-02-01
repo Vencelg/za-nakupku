@@ -149,12 +149,12 @@ class AuthenticationController extends Controller
     {
         $endedListings = Listing::whereHas('payments', function ($query) use ($request) {
             $query->where('user_id', $request->user()->id)
-                ->where('status', ListingStatusEnum::ENDED);
+                ->where('status', ListingStatusEnum::ENDED->value);
         })->orderBy('created_at', 'desc')->get();
 
         $activeListings = Listing::whereHas('payments', function ($query) use ($request) {
             $query->where('user_id', $request->user()->id)
-                ->whereIn('status', [ListingStatusEnum::ACTIVE, ListingStatusEnum::SOON_ENDING]);
+                ->whereIn('status', [ListingStatusEnum::ACTIVE, ListingStatusEnum::SOON_ENDING->value]);
         })->orderBy('created_at', 'desc')->get();
 
         return $this->response([
