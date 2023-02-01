@@ -18,6 +18,7 @@ class PasswordResetNotification extends Notification
      */
     public function __construct(
         protected string $url,
+        protected string $email,
     )
     {
     }

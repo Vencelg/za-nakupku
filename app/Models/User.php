@@ -89,9 +89,11 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function favouriteListings(): BelongsToMany
     {
-        return $this->belongsToMany(Listing::class, 'favourites')->with(['user' => function ($query) {
-            $query->withCount('reviewsRecipientOf')->withAvg('reviewsRecipientOf', 'rating');
-        }]);
+        return $this->belongsToMany(Listing::class, 'favourites')->with([
+            'user' => function ($query) {
+                $query->withCount('reviewsRecipientOf')->withAvg('reviewsRecipientOf', 'rating');
+            }
+        ]);
     }
 
     /**
@@ -109,9 +111,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendPasswordResetNotification($token): void
     {
-        $url = config('app.FRONTEND_PASSWORD_RESET_URL') . $token;
+        $url = config('app.FRONTEND_PASSWORD_RESET_URL') . $token . '&email=' . $this->email;
 
-        $this->notify(new PasswordResetNotification($url));
+        $this->notify(new PasswordResetNotification($url, $this->email));
     }
 
     /**
