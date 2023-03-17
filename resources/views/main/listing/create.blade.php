@@ -306,7 +306,7 @@
                          hover:bg-green-700 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,
                          202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba
                          (59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-green-700
-                         active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] mb-8"
+                         active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] mb-8 xs:w-full xl:w-auto"
                             data-te-ripple-init
                             data-te-ripple-color="light"
                         >

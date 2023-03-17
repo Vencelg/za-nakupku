@@ -316,7 +316,7 @@
                         <form id="deleteForm" action="{{ route('user.delete', ['id' => $user->id]) }}"
                               method="GET">@csrf</form>
                     </div>
-                    <div class="xl:ml-12 mb-6 xs:flex xs:flex-col xs:px-12 xs:m-auto xs:gap-4">
+                    <div class="xs:flex xs:flex-col xs:px-12 xs:m-auto xs:gap-4 xl:flex-row">
                         <!-- Update -->
                             <button
                                 form="updateForm"

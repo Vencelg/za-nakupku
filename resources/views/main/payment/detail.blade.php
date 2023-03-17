@@ -202,7 +202,7 @@
                         <form id="deleteForm" action="{{ route('payment.delete', ['id' => $payment->id]) }}"
                               method="GET">@csrf</form>
                     </div>
-                    <div class="xl:ml-12 xs:flex xs:flex-col xs:px-12 xs:m-auto xs:gap-4">
+                    <div class="xs:flex xs:flex-col xs:px-12 xs:m-auto xs:gap-4 xl:flex-row">
                         <!-- Update -->
                             <button
                                 form="updateForm"
