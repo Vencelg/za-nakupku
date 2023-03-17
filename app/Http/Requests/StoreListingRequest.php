@@ -31,14 +31,17 @@ class StoreListingRequest extends FormRequest
             'price' => ['required', 'integer'],
             'phone_number' => ['required', 'string'],
             'location' => ['required', 'string'],
-            'ending' => ['required', 'date_format:Y-m-d H:i:s', 'after:tomorrow']
+            'ending' => ['sometimes', 'date_format:Y-m-d H:i:s', 'after:tomorrow'],
+            'ending_date' => ['sometimes', 'date_format:d/m/Y', 'after:today'],
+            'ending_time' => ['sometimes', 'date_format:H:i']
         ];
     }
 
     public function messages()
     {
         return [
-            'ending.after' => 'Auction can\'t end on today\'s date'
+            'ending.after' => 'Auction can\'t end on today\'s date',
+            'ending_date.after' => 'Auction can\'t end on today\'s date',
         ];
     }
 }

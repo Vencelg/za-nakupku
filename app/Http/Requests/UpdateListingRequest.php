@@ -37,14 +37,15 @@ class UpdateListingRequest extends FormRequest
             ];
         }
 
-        if ($this->isMethod('PATCH')) {
+        if ($this->isMethod('PATCH') || $this->isMethod('POST')) {
             return [
                 'user_id' => ['exists:App\Models\User,id'],
                 'category_id' => ['exists:App\Models\Category,id'],
                 'name' => ['string'],
                 'info' => ['string'],
-                'price' => ['integer'],
+                'price' => ['integer', 'min:15'],
                 'phone_number' => ['string'],
+                'status' => ['integer', 'min:0', 'max:2'],
                 'location' => ['string'],
                 'ending' => ['date_format:Y-m-d H:i:s'],
                 'sold' => ['bool']

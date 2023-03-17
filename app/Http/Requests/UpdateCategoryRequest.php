@@ -30,10 +30,10 @@ class UpdateCategoryRequest extends FormRequest
             ];
         }
 
-        if ($this->isMethod('PATCH')) {
+        if ($this->isMethod('PATCH') || $this->isMethod('POST')) {
             return [
                 'name' => ['string', 'max:255'],
-                'code' => ['string', 'max:20', 'unique:categories'],
+                'code' => ['string', 'max:20', 'unique:categories,code,' . $this->route('id')],
             ];
         }
     }

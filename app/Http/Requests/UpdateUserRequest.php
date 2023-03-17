@@ -36,7 +36,7 @@ class UpdateUserRequest extends FormRequest
             ];
         }
 
-        if ($this->isMethod('PATCH')) {
+        if ($this->isMethod('PATCH') || $this->isMethod('POST')) {
             return [
                 'firstname' => ['string', 'max:255'],
                 'lastname' => ['string', 'max:255'],
