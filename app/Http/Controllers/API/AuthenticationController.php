@@ -49,6 +49,10 @@ class AuthenticationController extends Controller
         ]);
         $newUser->save();
 
+        if ($newUser->hasVerifiedEmail()) {
+            $newUser->sendEmailVerificationNotification();
+        }
+
         return $this->response($newUser, 200);
     }
 
@@ -64,6 +68,11 @@ class AuthenticationController extends Controller
 
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
             throw new ControllerException('Invalid credentials', 400);
+        }
+
+        if (!$user->email_verified_at) {
+            $user->sendEmailVerificationNotification();
+            throw new ControllerException('User not verified', 400);
         }
 
         $accessToken = $user->createToken('accessToken')->plainTextToken;
