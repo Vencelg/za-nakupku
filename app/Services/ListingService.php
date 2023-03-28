@@ -78,9 +78,11 @@ class ListingService implements ListingServiceInterface
     public function addTimeToListing(Listing $listing): void
     {
         $date2 = Carbon::createFromFormat('Y-m-d H:i:s', $listing->ending);
+        $timestamp1 = $date2->timestamp;
+        $timestamp2 = $date2->subMinutes(1)->timestamp;
 
-        if ($date2->isCurrentMinute()) {
-            $date2->addSeconds(10);
+        if (now()->timestamp > $timestamp2 && now()->timestamp < $timestamp1) {
+            $date2->addMinute()->addSeconds(30);
             $listing->setAttribute('ending', $date2);
             $listing->save();
         }

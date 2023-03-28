@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{{asset('images/favicon.png')}}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
           integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -26,7 +27,6 @@
     let innerWidth2 = null;
 
     const setMode2 = (e) => {
-        // Check necessary for Android devices
         if (window.innerWidth === innerWidth2) {
             return;
         }
@@ -51,7 +51,6 @@
     } else {
         document.documentElement.classList.remove('dark');
     }
-    ;
 
     function setDarkTheme() {
         document.documentElement.classList.add("dark");

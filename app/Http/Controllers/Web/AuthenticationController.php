@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class AuthenticationController extends Controller
 {
+
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -25,6 +27,10 @@ class AuthenticationController extends Controller
     {
         if (!Auth::attempt($request->only('email', 'password'), is_string($request->input('remember_me')))) {
             return back()->with('error', 'Invalid Login Credentials');
+        }
+
+        if (!Auth::user()->is_admin) {
+            return back()->with('error', 'This user can\'t access this website');
         }
 
         return redirect()->route('dashboard');

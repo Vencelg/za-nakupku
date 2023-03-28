@@ -8,9 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\PasswordResetRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\SendMessageRequest;
 use App\Http\Requests\SendPasswordResetRequest;
 use App\Models\Listing;
 use App\Models\User;
+use App\Notifications\MessageNotification;
 use DB;
 use Hash;
 use Illuminate\Auth\Events\PasswordReset;
@@ -49,6 +51,10 @@ class AuthenticationController extends Controller
         ]);
         $newUser->save();
 
+        if (!$newUser->hasVerifiedEmail()) {
+            $newUser->sendEmailVerificationNotification();
+        }
+
         return $this->response($newUser, 200);
     }
 
@@ -64,6 +70,11 @@ class AuthenticationController extends Controller
 
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
             throw new ControllerException('Invalid credentials', 400);
+        }
+
+        if (!$user->email_verified_at) {
+            $user->sendEmailVerificationNotification();
+            throw new ControllerException('User not verified', 400);
         }
 
         $accessToken = $user->createToken('accessToken')->plainTextToken;
@@ -165,6 +176,19 @@ class AuthenticationController extends Controller
 
     public function authedUserListings(Request $request): JsonResponse
     {
-        return $this->response($request->user()->listings()->orderBy('created_at', 'desc')->get(), 200);
+        return $this->response($request->user()->listings()->orderBy('created_at', 'desc')->get(),
+            200);
+    }
+
+    public function sendMessageToUser(SendMessageRequest $request): JsonResponse
+    {
+        $user = User::where('email', $request->input('email'))->first();
+        if (!($user instanceof User)) {
+            throw new ControllerException('User with email: '. $request->input('email') . ' not found', 400);
+        }
+
+        $user->notify(new MessageNotification($request->input('subject'), $request->input('body')));
+
+        return $this->response([], 200);
     }
 }
