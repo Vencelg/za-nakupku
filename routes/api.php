@@ -41,6 +41,9 @@ Route::group(['prefix' => 'auth'], function () {
         ->middleware('auth:sanctum');
     Route::get('user/listings', [AuthenticationController::class, 'authedUserListings'])
         ->middleware('auth:sanctum');
+    Route::post('message/send', [AuthenticationController::class, 'sendMessageToUser'])
+        ->middleware('auth:sanctum');
+
 
 
     Route::group(['prefix' => 'password/reset'], function () {

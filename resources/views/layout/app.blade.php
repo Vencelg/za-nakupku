@@ -26,7 +26,6 @@
     let innerWidth2 = null;
 
     const setMode2 = (e) => {
-        // Check necessary for Android devices
         if (window.innerWidth === innerWidth2) {
             return;
         }
@@ -51,7 +50,6 @@
     } else {
         document.documentElement.classList.remove('dark');
     }
-    ;
 
     function setDarkTheme() {
         document.documentElement.classList.add("dark");

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use LaravelIdea\Helper\App\Models\_IH_Listing_C;
 use LaravelIdea\Helper\App\Models\_IH_Listing_QB;
@@ -40,7 +41,8 @@ class Listing extends Model
      */
     protected $appends = [
         'isFavourite',
-        'winningUserId'
+        'winningUserId',
+        'winningUserUsername',
     ];
 
     /**
@@ -88,12 +90,25 @@ class Listing extends Model
     }
 
     /**
-     * @return int|null
+     * @return array|\LaravelIdea\Helper\App\Models\_IH_User_C|\LaravelIdea\Helper\App\Models\_IH_User_QB|Builder|Collection|Model|User|User[]|null
      */
-    public function getWinningUserIdAttribute(): ?int
+    public function getWinningUserIdAttribute(): ?string
     {
-        return $this->payments()->where('listing_id', $this->id)->orderBy('amount', 'desc')->first()?->user_id;
+        return $this->payments()->where('listing_id', $this->id)->orderBy('amount', 'desc')->first()
+            ?->user_id;
     }
+
+    public function getWinningUserUsernameAttribute(): ?string
+    {
+        $userid = $this->payments()->where('listing_id', $this->id)->orderBy('amount', 'desc')->first()
+            ?->user_id;
+        if ($userid === null) {
+            return null;
+        }
+
+        return User::find($userid)->name;
+    }
+
 
     /**
      * @return bool
