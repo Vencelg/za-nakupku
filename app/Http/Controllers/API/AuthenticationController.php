@@ -51,7 +51,7 @@ class AuthenticationController extends Controller
         ]);
         $newUser->save();
 
-        if ($newUser->hasVerifiedEmail()) {
+        if (!$newUser->hasVerifiedEmail()) {
             $newUser->sendEmailVerificationNotification();
         }
 
