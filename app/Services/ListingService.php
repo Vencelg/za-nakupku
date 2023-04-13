@@ -82,7 +82,7 @@ class ListingService implements ListingServiceInterface
         $timestamp2 = $date2->subMinutes(1)->timestamp;
 
         if (now()->timestamp > $timestamp2 && now()->timestamp < $timestamp1) {
-            $date2->addSeconds(30);
+            $date2->addMinute()->addSeconds(30);
             $listing->setAttribute('ending', $date2);
             $listing->save();
         }
