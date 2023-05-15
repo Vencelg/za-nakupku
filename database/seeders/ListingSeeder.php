@@ -15,6 +15,6 @@ class ListingSeeder extends Seeder
      */
     public function run()
     {
-        Listing::factory()->times(60)->create();
+        Listing::factory()->times(40)->create();
     }
 }
